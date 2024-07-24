@@ -1,6 +1,8 @@
 package com.gym.clients.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @SequenceGenerator(name = "idGenerator", initialValue = 1, allocationSize = 1)
@@ -8,8 +10,13 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
     private Long id;
+
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
+    @Email
     private String email;
 
 

@@ -2,6 +2,7 @@ package com.gym.clients.controller;
 
 import com.gym.clients.model.Client;
 import com.gym.clients.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class ClientController {
     }
 
     @PostMapping("/clients")
-    public Client addClient(@RequestBody Client client){
+    public Client addClient(@RequestBody @Valid Client client){
         return clientService.addClient(client);
     }
 
