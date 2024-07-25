@@ -42,9 +42,12 @@ public class ClientServiceImpl implements ClientService {
     public Client putClient(Client client, Long id) {
         return clientRepository.findById(id)
                 .map(dbClient -> {
+                    if (!dbClient.getEmail().equals(client.getEmail())){
+                        throw new RuntimeException();
+                    }
                     dbClient.setFirstName(client.getFirstName());
                     dbClient.setLastName(client.getLastName());
-
+                    dbClient.setEmail(client.getEmail());
                     return clientRepository.save(dbClient);
                 }).orElseThrow();
     }
