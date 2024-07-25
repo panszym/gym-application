@@ -3,7 +3,6 @@ package com.gym.clients.service;
 import com.gym.clients.model.Client;
 import com.gym.clients.repository.ClientRepository;
 import io.micrometer.common.util.StringUtils;
-import org.apache.catalina.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +28,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client addClient(Client client) {
+        checkClientEmail(client);
         clientRepository.save(client);
         return client;
     }
@@ -58,5 +58,10 @@ public class ClientServiceImpl implements ClientService {
 
                     return clientRepository.save(dbClient);
                 }).orElseThrow();
+    }
+
+    private void checkClientEmail(Client client) {
+        if (clientRepository.existsByEmail(client.getEmail()))
+            throw new IllegalArgumentException();
     }
 }
