@@ -1,5 +1,7 @@
 package com.gym.clients.service;
 
+import com.gym.clients.exception.Error;
+import com.gym.clients.exception.ClientException;
 import com.gym.clients.model.Client;
 import com.gym.clients.repository.ClientRepository;
 import io.micrometer.common.util.StringUtils;
@@ -22,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow();
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
         return client;
     }
 
@@ -49,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
                     dbClient.setLastName(client.getLastName());
                     dbClient.setEmail(client.getEmail());
                     return clientRepository.save(dbClient);
-                }).orElseThrow();
+                }).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
     }
 
     @Override
@@ -60,11 +62,11 @@ public class ClientServiceImpl implements ClientService {
                     if (!StringUtils.isEmpty(client.getLastName())) dbClient.setLastName(client.getLastName());
 
                     return clientRepository.save(dbClient);
-                }).orElseThrow();
+                }).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
     }
 
     private void checkClientEmail(Client client) {
         if (clientRepository.existsByEmail(client.getEmail()))
-            throw new IllegalArgumentException();
+            throw new ClientException(Error.EMAIL_ALREADY_EXIST);
     }
 }
