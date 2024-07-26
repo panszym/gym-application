@@ -26,6 +26,16 @@ public class ClientController {
         return clientService.getClientById(id);
     }
 
+    @GetMapping("/status")
+    public List<Client> getClientsByStatus(@RequestParam(required = false) Client.Status status){
+        return clientService.getClientsByStatus(status);
+    }
+
+    @GetMapping("/tickets")
+    public List<Client> getClientsByTicket(@RequestParam(required = false) Client.Ticket ticket){
+        return clientService.getClientsByTicket(ticket);
+    }
+
     @PostMapping
     public Client addClient(@RequestBody @Valid Client client){
         return clientService.addClient(client);

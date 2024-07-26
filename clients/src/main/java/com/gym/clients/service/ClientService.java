@@ -11,6 +11,10 @@ public interface ClientService {
 
     Client getClientById(Long id);
 
+    List<Client> getClientsByStatus(Client.Status status);
+
+    List<Client> getClientsByTicket(Client.Ticket ticket);
+
     Client addClient(Client client);
 
     Client putClient(Client client, Long id);

@@ -27,6 +27,21 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
         return client;
     }
+    @Override
+    public List<Client> getClientsByStatus(Client.Status status){
+        if (status != null){
+            return clientRepository.findAllByStatus(status);
+        }
+        return clientRepository.findAll();
+    };
+
+    @Override
+    public List<Client> getClientsByTicket(Client.Ticket ticket){
+        if (ticket != null){
+            return clientRepository.findAllByTicket(ticket);
+        }
+        return clientRepository.findAll();
+    };
 
     @Override
     public Client addClient(Client client) {
@@ -44,12 +59,15 @@ public class ClientServiceImpl implements ClientService {
     public Client putClient(Client client, Long id) {
         return clientRepository.findById(id)
                 .map(dbClient -> {
-                    if (!dbClient.getEmail().equals(client.getEmail())){
+                    if (!dbClient.getEmail().equals(client.getEmail())) {
                         throw new RuntimeException();
                     }
                     dbClient.setFirstName(client.getFirstName());
                     dbClient.setLastName(client.getLastName());
                     dbClient.setEmail(client.getEmail());
+                    dbClient.setStatus(client.getStatus());
+                    dbClient.setTicket(client.getTicket());
+
                     return clientRepository.save(dbClient);
                 }).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
     }
@@ -60,6 +78,9 @@ public class ClientServiceImpl implements ClientService {
                 .map(dbClient -> {
                     if (!StringUtils.isEmpty(client.getFirstName())) dbClient.setFirstName(client.getFirstName());
                     if (!StringUtils.isEmpty(client.getLastName())) dbClient.setLastName(client.getLastName());
+                    if (!StringUtils.isEmpty(client.getStatus().toString()))dbClient.setStatus(client.getStatus());
+                    if (!StringUtils.isEmpty(client.getTicket().toString()))dbClient.setTicket(client.getTicket());
+
 
                     return clientRepository.save(dbClient);
                 }).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
