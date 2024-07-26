@@ -60,7 +60,7 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(id)
                 .map(dbClient -> {
                     if (!dbClient.getEmail().equals(client.getEmail())) {
-                        throw new RuntimeException();
+                        throw new ClientException(Error.DIFFERENT_EMAIL);
                     }
                     dbClient.setFirstName(client.getFirstName());
                     dbClient.setLastName(client.getLastName());
