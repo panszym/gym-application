@@ -11,7 +11,7 @@ public class ClientExceptionHandler {
     @ExceptionHandler(value = ClientException.class)
     public ResponseEntity<ErrorInfo> handleException(ClientException e){
         ResponseEntity response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        if (Error.STUDENT_NOT_FOUND.equals(e.getError())){
+        if (Error.CLIENT_NOT_FOUND.equals(e.getError())){
               response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorInfo(e.getError().getMessage()));
         }
         if (Error.EMAIL_ALREADY_EXIST.equals(e.getError()) || Error.DIFFERENT_EMAIL.equals(e.getError()) ){

@@ -24,24 +24,29 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
         return client;
     }
+
     @Override
-    public List<Client> getClientsByStatus(Client.Status status){
-        if (status != null){
+    public List<Client> getClientsByStatus(Client.Status status) {
+        if (status != null) {
             return clientRepository.findAllByStatus(status);
         }
         return clientRepository.findAll();
-    };
+    }
+
+    ;
 
     @Override
-    public List<Client> getClientsByTicket(Client.Ticket ticket){
-        if (ticket != null){
+    public List<Client> getClientsByTicket(Client.Ticket ticket) {
+        if (ticket != null) {
             return clientRepository.findAllByTicket(ticket);
         }
         return clientRepository.findAll();
-    };
+    }
+
+    ;
 
     @Override
     public Client addClient(Client client) {
@@ -62,28 +67,18 @@ public class ClientServiceImpl implements ClientService {
                     if (!dbClient.getEmail().equals(client.getEmail())) {
                         throw new ClientException(Error.DIFFERENT_EMAIL);
                     }
-                    dbClient.setFirstName(client.getFirstName());
-                    dbClient.setLastName(client.getLastName());
-                    dbClient.setEmail(client.getEmail());
-                    dbClient.setStatus(client.getStatus());
-                    dbClient.setTicket(client.getTicket());
-
+                    dbClient.updateClientPut(client);
                     return clientRepository.save(dbClient);
-                }).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
+                }).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
     }
 
     @Override
     public Client patchClient(Client client, Long id) {
         return clientRepository.findById(id)
                 .map(dbClient -> {
-                    if (!StringUtils.isEmpty(client.getFirstName())) dbClient.setFirstName(client.getFirstName());
-                    if (!StringUtils.isEmpty(client.getLastName())) dbClient.setLastName(client.getLastName());
-                    if (!StringUtils.isEmpty(client.getStatus().toString()))dbClient.setStatus(client.getStatus());
-                    if (!StringUtils.isEmpty(client.getTicket().toString()))dbClient.setTicket(client.getTicket());
-
-
+                    dbClient.updateClientPatch(client);
                     return clientRepository.save(dbClient);
-                }).orElseThrow(() -> new ClientException(Error.STUDENT_NOT_FOUND));
+                }).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
     }
 
     private void checkClientEmail(Client client) {

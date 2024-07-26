@@ -1,5 +1,6 @@
 package com.gym.clients.model;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @SequenceGenerator(name = "idGenerator", initialValue = 1, allocationSize = 1)
+@Table(name = "clients")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
@@ -33,7 +35,7 @@ public class Client {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -41,7 +43,7 @@ public class Client {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -49,7 +51,7 @@ public class Client {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
@@ -61,7 +63,7 @@ public class Client {
         return status;
     }
 
-    public void setStatus(Status status) {
+    void setStatus(Status status) {
         this.status = status;
     }
 
@@ -69,9 +71,26 @@ public class Client {
         return ticket;
     }
 
-    public void setTicket(Ticket ticket) {
+    void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
+
+    public void updateClientPut(Client client) {
+        setFirstName(client.getFirstName());
+        setLastName(client.getLastName());
+        setEmail(client.getEmail());
+        setStatus(client.getStatus());
+        setTicket(client.getTicket());
+    }
+
+    public void updateClientPatch(Client client) {
+        if (!StringUtils.isEmpty(client.getFirstName())) setFirstName(client.getFirstName());
+        if (!StringUtils.isEmpty(client.getLastName())) setLastName(client.getLastName());
+        if (!StringUtils.isEmpty(client.getStatus().toString())) setStatus(client.getStatus());
+        if (!StringUtils.isEmpty(client.getTicket().toString())) setTicket(client.getTicket());
+
+    }
+
 
     public enum Status {
         ACTIVE,
