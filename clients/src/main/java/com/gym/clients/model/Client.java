@@ -86,8 +86,8 @@ public class Client {
     public void updateClientPatch(Client client) {
         if (!StringUtils.isEmpty(client.getFirstName())) setFirstName(client.getFirstName());
         if (!StringUtils.isEmpty(client.getLastName())) setLastName(client.getLastName());
-        if (!StringUtils.isEmpty(client.getStatus().toString())) setStatus(client.getStatus());
-        if (!StringUtils.isEmpty(client.getTicket().toString())) setTicket(client.getTicket());
+        if (client.getStatus() != null) setStatus(client.getStatus());
+        if (client.getTicket() != null) setTicket(client.getTicket());
 
     }
 
