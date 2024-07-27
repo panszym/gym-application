@@ -14,19 +14,19 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "FirstName must not be blank.")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "LastName must not be blank.")
     private String lastName;
-    @NotBlank
+    @NotBlank(message = "Email must not be blank.")
     @Email
     private String email;
 
-    @NotNull
+    @NotNull(message = "Status must not be null.")
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @NotNull
+    @NotNull(message = "Status must not be null.")
     @Enumerated(EnumType.STRING)
     private Ticket ticket;
 
