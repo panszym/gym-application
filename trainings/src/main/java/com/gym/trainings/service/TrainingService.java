@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TrainingService {
 
-    List<Training> getTrainings();
+    List<Training> getAllTraining();
 
     Training getTraining(Long trainingCode);
 

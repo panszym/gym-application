@@ -14,7 +14,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> getTrainings() {
+    public List<Training> getAllTraining() {
         return trainingRepository.findAll();
     }
 
