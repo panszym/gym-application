@@ -2,6 +2,7 @@ package com.gym.training.model;
 
 import com.gym.training.exception.Error;
 import com.gym.training.exception.TrainingException;
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -56,5 +57,23 @@ public class Training {
     public void validateTraining() {
         validateParticipants();
         validateStatus();
+    }
+
+    public void updateTrainingPut(Training training) {
+        setName(training.getName());
+        setDescription(training.getDescription());
+        setDateTime(training.getDateTime());
+        setMaxParticipantsNumber(training.getMaxParticipantsNumber());
+        setParticipantsNumber(training.getParticipantsNumber());
+        setStatus(training.getStatus());
+    }
+
+    public void updateTrainingPatch(Training training) {
+        if (!StringUtils.isEmpty(training.getName())) setName(training.getName());
+        if (!StringUtils.isEmpty(training.getDescription())) setDescription(training.getDescription());
+        if (training.getDateTime() != null) setDateTime(training.getDateTime());
+        if (training.getMaxParticipantsNumber() != null) setMaxParticipantsNumber(training.getMaxParticipantsNumber());
+        if (training.getParticipantsNumber() != null) setParticipantsNumber(training.getParticipantsNumber());
+        if (training.getStatus() != null) setStatus(training.getStatus());
     }
 }

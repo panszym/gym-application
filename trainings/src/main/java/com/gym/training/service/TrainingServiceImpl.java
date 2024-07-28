@@ -49,11 +49,21 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training putTraining(Training training, String trainingCode) {
-        return null;
+        return trainingRepository.findById(trainingCode)
+                .map(dbTraining -> {
+                    training.validateTraining();
+                    dbTraining.updateTrainingPut(training);
+                    return trainingRepository.save(dbTraining);
+                }).orElseThrow(() -> new TrainingException(Error.TRAINING_NOT_FOUND));
     }
 
     @Override
     public Training patchTraining(Training training, String trainingCode) {
-        return null;
+        return trainingRepository.findById(trainingCode)
+                .map(dbTraining -> {
+                    training.validateTraining();
+                    dbTraining.updateTrainingPatch(training);
+                    return trainingRepository.save(dbTraining);
+                }).orElseThrow(() -> new TrainingException(Error.TRAINING_NOT_FOUND));
     }
 }
