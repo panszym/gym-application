@@ -1,7 +1,7 @@
-package com.gym.trainings.controller;
+package com.gym.training.controller;
 
-import com.gym.trainings.model.Training;
-import com.gym.trainings.service.TrainingService;
+import com.gym.training.model.Training;
+import com.gym.training.service.TrainingService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,32 +18,37 @@ public class TrainingController {
     }
 
     @GetMapping
-    List<Training> getAllTraining(){
+    List<Training> getAllTraining() {
         return trainingService.getAllTraining();
     }
 
     @GetMapping("/{trainingCode}")
-    Training getTraining(@PathVariable Long trainingCode){
+    Training getTraining(@PathVariable String trainingCode) {
         return trainingService.getTraining(trainingCode);
     }
 
+    @GetMapping("/status")
+    List<Training> getTrainingByStatus(@RequestParam Training.Status status) {
+        return trainingService.getTrainingByStatus(status);
+    }
+
     @PostMapping
-    Training addTraining(@RequestBody @Valid Training training){
+    Training addTraining(@RequestBody @Valid Training training) {
         return trainingService.addTraining(training);
     }
 
     @DeleteMapping("/{trainingCode}")
-    void deleteTraining(@PathVariable Long trainingCode){
+    void deleteTraining(@PathVariable String trainingCode) {
         trainingService.deleteTraining(trainingCode);
     }
 
     @PutMapping("/{trainingCode}")
-    Training putTraining(@RequestBody @Valid Training training, @PathVariable Long trainingCode){
+    Training putTraining(@RequestBody @Valid Training training, @PathVariable String trainingCode) {
         return training;
     }
 
-    @PutMapping("/{trainingCode}")
-    Training patchTraining(@RequestBody Training training, @PathVariable Long trainingCode){
+    @PatchMapping("/{trainingCode}")
+    Training patchTraining(@RequestBody Training training, @PathVariable String trainingCode) {
         return training;
     }
 

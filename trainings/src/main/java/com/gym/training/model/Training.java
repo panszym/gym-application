@@ -1,5 +1,7 @@
-package com.gym.trainings.model;
+package com.gym.training.model;
 
+import com.gym.training.exception.Error;
+import com.gym.training.exception.TrainingException;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 @Document
 public class Training {
     @Id
-    private Long trainingCode;
+    private String trainingCode;
 
     @NotBlank
     private String name;
@@ -36,8 +38,23 @@ public class Training {
     private Status status;
 
 
-    public enum Status{
+    public enum Status {
         ACTIVE,
         INACTIVE
+    }
+
+    private void validateParticipants() {
+        if (maxParticipantsNumber < participantsNumber) throw new TrainingException(Error.MORE_PARTICIPANTS_THAN_LIMIT);
+    }
+
+    private void validateStatus() {
+        if (Status.ACTIVE.equals(status) && participantsNumber.equals(maxParticipantsNumber)) {
+            throw new TrainingException(Error.TRAINING_CANNOT_HAVE_ACTIVE_STATUS);
+        }
+    }
+
+    public void validateTraining() {
+        validateParticipants();
+        validateStatus();
     }
 }
