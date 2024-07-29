@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -98,15 +97,21 @@ public class Training {
         if (participantsNumber.equals(maxParticipantsNumber)) setStatus(Status.FULL);
     }
 
-    public void removeParticipant() {
+    public void removeParticipant(String email) {
+        List<String> emailsList = trainingMemberList.stream()
+                .map(TrainingMember::getEmail).toList();
+        if (!emailsList.contains(email))
+            throw new TrainingException(Error.CLIENT_IS_NOT_ENROLLED_FOR_THIS_TRAINING);
         participantsNumber--;
+        trainingMemberList.removeIf(member -> member.getEmail().equals(email));
         if (Status.FULL.equals(this.getStatus())) setStatus(Status.ACTIVE);
     }
 
-    public void validateClient(String emails) {
+    public void validateClient(String email) {
         List<String> emailsList = trainingMemberList.stream()
                 .map(TrainingMember::getEmail).toList();
-        if (emailsList.contains(emails))throw new TrainingException(Error.CLIENT_IS_ALREADY_SIGNED_UP_FOR_THIS_TRAINING);
+        if (emailsList.contains(email))
+            throw new TrainingException(Error.CLIENT_IS_ALREADY_SIGNED_UP_FOR_THIS_TRAINING);
     }
 
 }

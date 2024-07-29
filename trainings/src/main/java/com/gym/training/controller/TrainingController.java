@@ -84,4 +84,11 @@ public class TrainingController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/remove/{trainingCode}/clients/{clientId}")
+    ResponseEntity<?> removeParticipantFromTraining(@PathVariable String trainingCode, @PathVariable Long clientId){
+        trainingService.removeParticipantFromTraining(trainingCode, clientId);
+        logger.info("Remove participant from training");
+        return ResponseEntity.ok().build();
+    }
+
 }

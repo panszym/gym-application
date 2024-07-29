@@ -97,8 +97,12 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public void removeParticipantFromTraining(String trainingCode, String email) {
-
+    public void removeParticipantFromTraining(String trainingCode, Long clientId) {
+        Training training = getTraining(trainingCode);
+        ClientDto clientDto = clientService.getClientById(clientId);
+        System.out.println(clientDto.getEmail());
+        training.removeParticipant(clientDto.getEmail());
+        trainingRepository.save(training);
     }
 
     @Override

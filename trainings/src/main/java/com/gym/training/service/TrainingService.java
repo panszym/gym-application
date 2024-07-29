@@ -24,7 +24,7 @@ public interface TrainingService {
     void trainingSignup(String trainingCode, Long clientId);
     List<ClientDto> getTrainingMembers(String trainingCode);
 
-    void removeParticipantFromTraining(String trainingCode, String email);
+    void removeParticipantFromTraining(String trainingCode, Long clientId);
 
     void finishTraining(String trainingCode);
 

@@ -14,4 +14,5 @@ public class TrainingMember {
         this.firstname = firstname;
         this.email = email;
     }
+
 }
