@@ -41,6 +41,7 @@ public class TrainingServiceImpl implements TrainingService {
         if (trainingRepository.existsById(training.getTrainingCode()))
             throw new TrainingException(Error.TRAINING_ALREADY_EXIST);
         training.validateTraining();
+        training.setParticipantsNumber(0);
         return trainingRepository.save(training);
     }
 
