@@ -81,6 +81,7 @@ public class TrainingServiceImpl implements TrainingService {
         training.validateActiveStatus();
         ClientDto clientDto = clientService.getClientById(clientId);
         clientDto.validateClient();
+        training.validateClient(clientDto.getEmail());
         training.addParticipant();
         training.getTrainingMemberList().add(new TrainingMember(clientDto.getFirstName(), clientDto.getEmail()));
         trainingRepository.save(training);

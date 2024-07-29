@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -101,4 +102,11 @@ public class Training {
         participantsNumber--;
         if (Status.FULL.equals(this.getStatus())) setStatus(Status.ACTIVE);
     }
+
+    public void validateClient(String emails) {
+        List<String> emailsList = trainingMemberList.stream()
+                .map(TrainingMember::getEmail).toList();
+        if (emailsList.contains(emails))throw new TrainingException(Error.CLIENT_IS_ALREADY_SIGNED_UP_FOR_THIS_TRAINING);
+    }
+
 }
