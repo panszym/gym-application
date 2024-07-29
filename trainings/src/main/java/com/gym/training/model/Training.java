@@ -12,6 +12,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,6 +40,8 @@ public class Training {
     @NotNull
     private Status status;
 
+    private List<TrainingMember> trainingMemberList = new ArrayList<>();
+
 
     public enum Status {
         ACTIVE,
@@ -55,16 +59,18 @@ public class Training {
         }
     }
 
-    public void validateActiveStatus(){
-        if (!Status.ACTIVE.equals(this.getStatus()))throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
+    public void validateActiveStatus() {
+        if (!Status.ACTIVE.equals(this.getStatus())) throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
     }
+
     public void validateTraining() {
         validateParticipants();
         validateStatus();
     }
 
-    public void changeStatusToInactive(){
-        if (Status.INACTIVE.equals(this.getStatus()) || Status.FULL.equals(this.getStatus()))throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
+    public void changeStatusToInactive() {
+        if (Status.INACTIVE.equals(this.getStatus()) || Status.FULL.equals(this.getStatus()))
+            throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
         setStatus(Status.INACTIVE);
     }
 
@@ -86,8 +92,13 @@ public class Training {
         if (training.getStatus() != null) setStatus(training.getStatus());
     }
 
-    public void addParticipant(){
+    public void addParticipant() {
         participantsNumber++;
-        if (participantsNumber.equals(maxParticipantsNumber))setStatus(Status.FULL);
+        if (participantsNumber.equals(maxParticipantsNumber)) setStatus(Status.FULL);
+    }
+
+    public void removeParticipant() {
+        participantsNumber--;
+        if (Status.FULL.equals(this.getStatus())) setStatus(Status.ACTIVE);
     }
 }

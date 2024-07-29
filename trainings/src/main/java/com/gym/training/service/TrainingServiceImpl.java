@@ -4,10 +4,12 @@ import com.gym.training.exception.Error;
 import com.gym.training.exception.TrainingException;
 import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
+import com.gym.training.model.TrainingMember;
 import com.gym.training.repository.TrainingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrainingServiceImpl implements TrainingService {
@@ -80,7 +82,22 @@ public class TrainingServiceImpl implements TrainingService {
         ClientDto clientDto = clientService.getClientById(clientId);
         clientDto.validateClient();
         training.addParticipant();
+        training.getTrainingMemberList().add(new TrainingMember(clientDto.getFirstName(), clientDto.getEmail()));
         trainingRepository.save(training);
+    }
+
+    @Override
+    public List<ClientDto> getTrainingMembers(String trainingCode) {
+        Training training = getTraining(trainingCode);
+        List<String> participantsEmails = training.getTrainingMemberList().stream()
+                .map(TrainingMember::getEmail)
+                .collect(Collectors.toList());
+        return clientService.getClientsByEmail(participantsEmails);
+    }
+
+    @Override
+    public void removeParticipantFromTraining(String trainingCode, String email) {
+
     }
 
     @Override

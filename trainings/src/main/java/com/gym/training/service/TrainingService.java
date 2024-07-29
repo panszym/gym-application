@@ -1,5 +1,6 @@
 package com.gym.training.service;
 
+import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public interface TrainingService {
     Training patchTraining(Training training, String trainingCode);
 
     void trainingSignup(String trainingCode, Long clientId);
+    List<ClientDto> getTrainingMembers(String trainingCode);
+
+    void removeParticipantFromTraining(String trainingCode, String email);
 
     void finishTraining(String trainingCode);
 

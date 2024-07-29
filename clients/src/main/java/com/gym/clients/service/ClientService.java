@@ -24,5 +24,7 @@ public interface ClientService {
 
     void toggleStatus(Long id);
 
+    List<Client> getClientsByEmail(List<String> emails);
+
 
 }

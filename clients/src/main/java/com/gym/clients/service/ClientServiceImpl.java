@@ -45,7 +45,10 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findAll();
     }
 
-    ;
+    @Override
+    public List<Client> getClientsByEmail(List<String> emails) {
+        return clientRepository.findAllByEmailIn(emails);
+    }
 
     @Override
     public Client addClient(Client client) {

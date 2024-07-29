@@ -1,5 +1,6 @@
 package com.gym.training.controller;
 
+import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
 import com.gym.training.service.TrainingService;
 import jakarta.validation.Valid;
@@ -37,6 +38,12 @@ public class TrainingController {
     List<Training> getTrainingByStatus(@RequestParam Training.Status status) {
         logger.info("Displayed list of training by status.");
         return trainingService.getTrainingByStatus(status);
+    }
+
+    @GetMapping("/{trainingCode}/participants")
+    public List<ClientDto> getTrainingMembers(@PathVariable String trainingCode){
+        logger.info("Display training participants");
+        return trainingService.getTrainingMembers(trainingCode);
     }
 
     @PostMapping
