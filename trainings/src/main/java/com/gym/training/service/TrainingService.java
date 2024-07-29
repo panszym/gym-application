@@ -20,6 +20,10 @@ public interface TrainingService {
 
     Training patchTraining(Training training, String trainingCode);
 
+    void trainingSignup(String trainingCode, Long clientId);
+
+    void finishTraining(String trainingCode);
+
 
 
 }

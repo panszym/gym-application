@@ -55,9 +55,17 @@ public class Training {
         }
     }
 
+    public void validateActiveStatus(){
+        if (!Status.ACTIVE.equals(this.getStatus()))throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
+    }
     public void validateTraining() {
         validateParticipants();
         validateStatus();
+    }
+
+    public void changeStatusToInactive(){
+        if (Status.INACTIVE.equals(this.getStatus()) || Status.FULL.equals(this.getStatus()))throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
+        setStatus(Status.INACTIVE);
     }
 
     public void updateTrainingPut(Training training) {
@@ -76,5 +84,10 @@ public class Training {
         if (training.getMaxParticipantsNumber() != null) setMaxParticipantsNumber(training.getMaxParticipantsNumber());
         if (training.getParticipantsNumber() != null) setParticipantsNumber(training.getParticipantsNumber());
         if (training.getStatus() != null) setStatus(training.getStatus());
+    }
+
+    public void addParticipant(){
+        participantsNumber++;
+        if (participantsNumber.equals(maxParticipantsNumber))setStatus(Status.FULL);
     }
 }

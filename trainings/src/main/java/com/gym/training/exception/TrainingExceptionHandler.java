@@ -16,7 +16,10 @@ public class TrainingExceptionHandler {
         }
         if (Error.TRAINING_ALREADY_EXIST.equals(e.getError())
                 || Error.MORE_PARTICIPANTS_THAN_LIMIT.equals(e.getError())
-                || Error.TRAINING_CANNOT_HAVE_ACTIVE_STATUS.equals(e.getError())) {
+                || Error.TRAINING_CANNOT_HAVE_ACTIVE_STATUS.equals(e.getError())
+                || Error.TRAINING_IS_NOT_ACTIVE.equals(e.getError())
+                || Error.CLIENT_IS_NOT_ACTIVE.equals(e.getError())
+                || Error.CLIENT_DOES_NOT_HAVE_PREMIUM_OR_MASTER_TICKET.equals(e.getError())) {
             response = ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorInfo(e.getError().getMessage()));
         }
         return response;

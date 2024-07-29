@@ -5,6 +5,7 @@ import com.gym.training.service.TrainingService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,5 +63,18 @@ public class TrainingController {
         return trainingService.patchTraining(training, trainingCode);
     }
 
+    @PostMapping("/{trainingCode}/clients/{clientId}")
+    ResponseEntity<?> trainingSignup(@PathVariable String trainingCode, @PathVariable Long clientId){
+        trainingService.trainingSignup(trainingCode, clientId);
+        logger.info("Client signed up to the training");
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/finish/{trainingCode}")
+    ResponseEntity<?> finishTraining(@PathVariable String trainingCode){
+        trainingService.finishTraining(trainingCode);
+        logger.info("Finish training");
+        return ResponseEntity.ok().build();
+    }
 
 }

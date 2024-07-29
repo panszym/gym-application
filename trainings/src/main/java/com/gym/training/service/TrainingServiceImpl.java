@@ -2,6 +2,7 @@ package com.gym.training.service;
 
 import com.gym.training.exception.Error;
 import com.gym.training.exception.TrainingException;
+import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
 import com.gym.training.repository.TrainingRepository;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,13 @@ import java.util.List;
 @Service
 public class TrainingServiceImpl implements TrainingService {
 
-    private TrainingRepository trainingRepository;
+    private final TrainingRepository trainingRepository;
 
-    public TrainingServiceImpl(TrainingRepository trainingRepository) {
+    private final ClientService clientService;
+
+    public TrainingServiceImpl(TrainingRepository trainingRepository, ClientService clientService) {
         this.trainingRepository = trainingRepository;
+        this.clientService = clientService;
     }
 
     @Override
@@ -65,5 +69,23 @@ public class TrainingServiceImpl implements TrainingService {
                     dbTraining.updateTrainingPatch(training);
                     return trainingRepository.save(dbTraining);
                 }).orElseThrow(() -> new TrainingException(Error.TRAINING_NOT_FOUND));
+    }
+
+    @Override
+    public void trainingSignup(String trainingCode, Long clientId) {
+        Training training = getTraining(trainingCode);
+        training.validateTraining();
+        training.validateActiveStatus();
+        ClientDto clientDto = clientService.getClientById(clientId);
+        clientDto.validateClient();
+        training.addParticipant();
+        trainingRepository.save(training);
+    }
+
+    @Override
+    public void finishTraining(String trainingCode) {
+        Training training = getTraining(trainingCode);
+        training.changeStatusToInactive();
+        trainingRepository.save(training);
     }
 }
