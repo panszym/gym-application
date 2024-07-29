@@ -41,7 +41,8 @@ public class Training {
 
     public enum Status {
         ACTIVE,
-        INACTIVE
+        INACTIVE,
+        FULL
     }
 
     private void validateParticipants() {
