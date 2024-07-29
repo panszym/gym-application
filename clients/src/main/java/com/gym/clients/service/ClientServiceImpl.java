@@ -1,10 +1,9 @@
 package com.gym.clients.service;
 
-import com.gym.clients.exception.Error;
 import com.gym.clients.exception.ClientException;
+import com.gym.clients.exception.Error;
 import com.gym.clients.model.Client;
 import com.gym.clients.repository.ClientRepository;
-import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,6 +78,13 @@ public class ClientServiceImpl implements ClientService {
                     dbClient.updateClientPatch(client);
                     return clientRepository.save(dbClient);
                 }).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
+    }
+
+    @Override
+    public void toggleStatus(Long id) {
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
+        client.toggleStatus();
+        clientRepository.save(client);
     }
 
     private void checkClientEmail(Client client) {

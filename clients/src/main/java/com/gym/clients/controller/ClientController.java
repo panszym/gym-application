@@ -5,6 +5,7 @@ import com.gym.clients.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class ClientController {
     }
 
     @GetMapping("/status")
-    public List<Client> getClientsByStatus(@RequestParam(required = false) Client.Status status){
+    public List<Client> getClientsByStatus(@RequestParam(required = true) Client.Status status){
         logger.info("Display client by status.");
         return clientService.getClientsByStatus(status);
     }
@@ -65,5 +66,12 @@ public class ClientController {
     public Client patchClient(@RequestBody Client client, @PathVariable Long id){
         logger.info("Update client's data.");
         return clientService.patchClient(client, id);
+    }
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<?> toggleStatus(@PathVariable Long id){
+        clientService.toggleStatus(id);
+        logger.info("Updated client's status.");
+        return ResponseEntity.noContent().build();
     }
 }

@@ -91,6 +91,12 @@ public class Client {
 
     }
 
+    public void toggleStatus(){
+        if (Status.ACTIVE.equals(this.getStatus())){
+            setStatus(Status.INACTIVE);
+        }else setStatus(Status.ACTIVE);
+    }
+
 
     public enum Status {
         ACTIVE,

@@ -2,7 +2,6 @@ package com.gym.clients.service;
 
 import com.gym.clients.model.Client;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ClientService {
@@ -22,6 +21,8 @@ public interface ClientService {
     Client patchClient(Client client, Long id);
 
     void deleteClient(Long id);
+
+    void toggleStatus(Long id);
 
 
 }
