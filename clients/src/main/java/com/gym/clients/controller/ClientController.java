@@ -34,7 +34,7 @@ public class ClientController {
     }
 
     @GetMapping("/status")
-    public List<Client> getClientsByStatus(@RequestParam(required = true) Client.Status status) {
+    public List<Client> getClientsByStatus(@RequestParam(required = false) Client.Status status) {
         logger.info("Display client by status.");
         return clientService.getClientsByStatus(status);
     }

@@ -31,8 +31,7 @@ public class ClientServiceImpl implements ClientService {
     public List<Client> getClientsByStatus(Client.Status status) {
         if (status != null) {
             return clientRepository.findAllByStatus(status);
-        }
-        return clientRepository.findAll();
+        } else throw new ClientException(Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS);
     }
 
     ;
@@ -41,8 +40,7 @@ public class ClientServiceImpl implements ClientService {
     public List<Client> getClientsByTicket(Client.Ticket ticket) {
         if (ticket != null) {
             return clientRepository.findAllByTicket(ticket);
-        }
-        return clientRepository.findAll();
+        } else throw new ClientException(Error.THERE_IS_NOT_REQUIRED_PARAMETER_TICKET);
     }
 
     @Override
