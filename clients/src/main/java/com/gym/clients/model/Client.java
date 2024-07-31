@@ -35,7 +35,7 @@ public class Client {
         return firstName;
     }
 
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -63,7 +63,7 @@ public class Client {
         return status;
     }
 
-    void setStatus(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

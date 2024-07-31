@@ -126,4 +126,35 @@ class ClientServiceImplTest {
                 .isInstanceOf(ClientException.class);
     }
 
+    @Test
+    void toggleStatus_clientIsInSystem_statusFromActiveToInactive() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var testClient = new Client();
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        testClient.setStatus(Client.Status.ACTIVE);
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(testClient));
+        toTest.toggleStatus(1L);
+        var result = testClient.getStatus();
+        //then
+        assertThat(result)
+                .isNotEqualTo(Client.Status.ACTIVE);
+    }
+
+    @Test
+    void toggleStatus_clientIsInSystem_statusFromInactiveToActive() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var testClient = new Client();
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        testClient.setStatus(Client.Status.INACTIVE);
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(testClient));
+        toTest.toggleStatus(1L);
+        var result = testClient.getStatus();
+        //then
+        assertThat(result)
+                .isNotEqualTo(Client.Status.INACTIVE);
+    }
 }
