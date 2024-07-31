@@ -36,7 +36,6 @@ class ClientServiceImplTest {
         //given
         var mockClientRepository = mock(ClientRepository.class);
         var mockClient = mock(Client.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(mockClient));
         var result = mockClientRepository.findById(1L);
@@ -97,20 +96,61 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void getClientsByEmail() {
+    void addClient_clientIsAlreadyInSystem_shouldReturnClientException() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        var mockClient = mock(Client.class);
+        //when
+        when(mockClientRepository.existsByEmail(mockClient.getEmail())).thenReturn(true);
+        var exception = catchThrowable(() -> toTest.addClient(mockClient));
+        //then
+        assertThat(exception)
+                .isInstanceOf(ClientException.class);
     }
 
     @Test
-    void addClient() {
+    void putClient_ClientIsNotInSystem_shouldThrowClientException() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        var testClient = getTestClient();
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
+        var exception = catchThrowable(() -> toTest.putClient(testClient, 1L));
+        //then
+        assertThat(exception)
+                .isInstanceOf(ClientException.class);
     }
 
-
     @Test
-    void putClient() {
+    void putClient_ClientIsInSystem_DifferentEmail_shouldThrowClientException() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        var testClient = getTestClient();
+        var testClient1 = getTestClient();
+        testClient1.setEmail("Kowalski@gmail.com");
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(testClient));
+        var exception = catchThrowable(() -> toTest.putClient(testClient1, testClient1.getId()));
+        //then
+        assertThat(exception)
+                .isInstanceOf(ClientException.class);
     }
 
     @Test
-    void patchClient() {
+    void patchClient_ClientIsNotInSystem_shouldThrowClientException() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        var testClient = getTestClient();
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
+        var exception = catchThrowable(() -> toTest.patchClient(testClient, 1L));
+        //then
+        assertThat(exception)
+                .isInstanceOf(ClientException.class);
     }
 
     @Test
@@ -130,7 +170,7 @@ class ClientServiceImplTest {
     void toggleStatus_clientIsInSystem_statusFromActiveToInactive() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var testClient = new Client();
+        var testClient = getTestClient();
         var toTest = new ClientServiceImpl(mockClientRepository);
         testClient.setStatus(Client.Status.ACTIVE);
         //when
@@ -146,7 +186,7 @@ class ClientServiceImplTest {
     void toggleStatus_clientIsInSystem_statusFromInactiveToActive() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var testClient = new Client();
+        var testClient = getTestClient();
         var toTest = new ClientServiceImpl(mockClientRepository);
         testClient.setStatus(Client.Status.INACTIVE);
         //when
@@ -156,5 +196,14 @@ class ClientServiceImplTest {
         //then
         assertThat(result)
                 .isNotEqualTo(Client.Status.INACTIVE);
+    }
+
+    Client getTestClient() {
+        Client client = new Client();
+        client.setFirstName("Jan");
+        client.setLastName("Kowalski");
+        client.setEmail("jKowalski@gmail.com");
+        client.setStatus(Client.Status.ACTIVE);
+        return client;
     }
 }
