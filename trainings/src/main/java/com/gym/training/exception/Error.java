@@ -9,7 +9,8 @@ public enum Error {
     CLIENT_IS_NOT_ACTIVE("Client is not active"),
     CLIENT_DOES_NOT_HAVE_PREMIUM_OR_MASTER_TICKET("Client does not have premium or master ticket."),
     CLIENT_IS_ALREADY_SIGNED_UP_FOR_THIS_TRAINING("Client is already signed up for this training."),
-    CLIENT_IS_NOT_ENROLLED_FOR_THIS_TRAINING("Client is not enrolled for this training");
+    CLIENT_IS_NOT_ENROLLED_FOR_THIS_TRAINING("Client is not enrolled for this training"),
+    THERE_IS_NOT_REQUIRED_PARAMETER_STATUS("Status parameter is required");
 
     private String message;
 

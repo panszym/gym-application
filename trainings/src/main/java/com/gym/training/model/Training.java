@@ -79,7 +79,6 @@ public class Training {
         setDescription(training.getDescription());
         setDateTime(training.getDateTime());
         setMaxParticipantsNumber(training.getMaxParticipantsNumber());
-        setParticipantsNumber(training.getParticipantsNumber());
         setStatus(training.getStatus());
     }
 
@@ -88,7 +87,6 @@ public class Training {
         if (!StringUtils.isEmpty(training.getDescription())) setDescription(training.getDescription());
         if (training.getDateTime() != null) setDateTime(training.getDateTime());
         if (training.getMaxParticipantsNumber() != null) setMaxParticipantsNumber(training.getMaxParticipantsNumber());
-        if (training.getParticipantsNumber() != null) setParticipantsNumber(training.getParticipantsNumber());
         if (training.getStatus() != null) setStatus(training.getStatus());
     }
 

@@ -11,6 +11,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -36,9 +37,10 @@ class ClientServiceImplTest {
         //given
         var mockClientRepository = mock(ClientRepository.class);
         var mockClient = mock(Client.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(mockClient));
-        var result = mockClientRepository.findById(1L);
+        var result = toTest.getClientById(1L);
         //then
         assertNotNull(result, "Response is null");
     }
@@ -48,7 +50,10 @@ class ClientServiceImplTest {
         //given
         var mockClientRepository = mock(ClientRepository.class);
         var toTest = new ClientServiceImpl(mockClientRepository);
+        var mockClient1 = mock(Client.class);
+        var mockClient2 = mock(Client.class);
         //when
+        when(mockClientRepository.findAllByStatus(any())).thenReturn(List.of(mockClient1, mockClient2));
         var exception = catchThrowable(() -> toTest.getClientsByStatus(null));
         //then
         assertThat(exception)

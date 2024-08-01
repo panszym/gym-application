@@ -35,15 +35,17 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<Training> getTrainingByStatus(Training.Status status) {
-        return trainingRepository.findAllByStatus(status);
+        if (status != null) {
+            return trainingRepository.findAllByStatus(status);
+        } else throw new TrainingException(Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS);
     }
 
     @Override
     public Training addTraining(Training training) {
         if (trainingRepository.existsById(training.getTrainingCode()))
             throw new TrainingException(Error.TRAINING_ALREADY_EXIST);
-        training.validateTraining();
         training.setParticipantsNumber(0);
+        training.validateTraining();
         return trainingRepository.save(training);
     }
 

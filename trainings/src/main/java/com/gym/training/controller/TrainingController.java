@@ -35,7 +35,7 @@ public class TrainingController {
     }
 
     @GetMapping("/status")
-    List<Training> getTrainingByStatus(@RequestParam Training.Status status) {
+    List<Training> getTrainingByStatus(@RequestParam(required = false) Training.Status status) {
         logger.info("Displayed list of training by status.");
         return trainingService.getTrainingByStatus(status);
     }
