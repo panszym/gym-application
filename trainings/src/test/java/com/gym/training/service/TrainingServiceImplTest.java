@@ -1,6 +1,7 @@
 package com.gym.training.service;
 
 import com.gym.training.exception.TrainingException;
+import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
 import com.gym.training.repository.TrainingRepository;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -207,11 +207,136 @@ class TrainingServiceImplTest {
     }
 
     @Test
-    void trainingSignup() {
+    void trainingSignup_trainingDoesNotExistInTheSystem_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        //when
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.empty());
+        var exception = catchThrowable(() -> toTest.trainingSignup(anyString(), 1L));
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
     }
 
     @Test
-    void getTrainingMembers() {
+    void trainingSignup_trainingExistsInTheSystem_clientDoesNotExistInSystemNullValue_shouldThrowNullPointerException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var mockTraining = mock(Training.class);
+        //when
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(mockTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(null);
+        var exception = catchThrowable(() -> toTest.trainingSignup(anyString(), 1L));
+        assertThat(exception)
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void trainingSignup_trainingExistsInTheSystem_clientExistsInSystem_clientStatusActive_premiumTicket_trainingStatusIsInactive_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        //when
+        testClientDto.setStatus(ClientDto.Status.ACTIVE);
+        testTraining.setStatus(Training.Status.INACTIVE);
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var exception = catchThrowable(() -> toTest.trainingSignup(anyString(), 1L));
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void trainingSignup_trainingExistsInTheSystem_clientExistsInSystem_clientStatusActive_premiumTicket_trainingStatusIsFULL_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        //when
+        testClientDto.setStatus(ClientDto.Status.ACTIVE);
+        testTraining.setStatus(Training.Status.FULL);
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var exception = catchThrowable(() -> toTest.trainingSignup(anyString(), 1L));
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+    @Test
+    void trainingSignup_trainingExistsInTheSystem_clientExistsInSystem_clientStatusInactive_premiumTicket_trainingStatusIsActive_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        //when
+        testClientDto.setStatus(ClientDto.Status.INACTIVE);
+        testTraining.setStatus(Training.Status.ACTIVE);
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var exception = catchThrowable(() -> toTest.trainingSignup(anyString(), 1L));
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void trainingSignup_trainingExistsInTheSystem_clientExistsInSystem_clientStatusActive_normalTicket_trainingStatusIsActive_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        //when
+        testClientDto.setTicket(ClientDto.Ticket.NORMAL);
+        testTraining.setStatus(Training.Status.ACTIVE);
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var exception = catchThrowable(() -> toTest.trainingSignup(anyString(), 1L));
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void getTrainingMembers_trainingDoesNotExistInTheSystem_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var mockClientDTO1 = mock(ClientDto.class);
+        var mockClientDTO2 = mock(ClientDto.class);
+        //when
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.empty());
+        when(mockClientService.getClientsByEmail(anyList())).thenReturn(List.of(mockClientDTO1, mockClientDTO2));
+        var exception = catchThrowable(() -> toTest.getTrainingMembers(anyString()));
+        //then
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void getTrainingMembers_trainingExistsInTheSystem_shouldReturnNotNull() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        var testTraining = getTestTraining();
+        var mockClientDTO1 = mock(ClientDto.class);
+        var mockClientDTO2 = mock(ClientDto.class);
+        //when
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientsByEmail(anyList())).thenReturn(List.of(mockClientDTO1, mockClientDTO2));
+        var result = toTest.getTrainingMembers(anyString());
+        //then
+        assertNotNull(result);
     }
 
     @Test
@@ -285,5 +410,14 @@ class TrainingServiceImplTest {
         training.setDateTime(LocalDateTime.parse("2024-10-23T17:00:00.000"));
         training.setMaxParticipantsNumber(10);
         return training;
+    }
+    ClientDto getTestClientDto() {
+        ClientDto clientDto = new ClientDto();
+        clientDto.setFirstName("testFirstName");
+        clientDto.setLastName("testLastName");
+        clientDto.setEmail("testmail@gmail.com");
+        clientDto.setStatus(ClientDto.Status.ACTIVE);
+        clientDto.setTicket(ClientDto.Ticket.PREMIUM);
+        return clientDto;
     }
 }
