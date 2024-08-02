@@ -102,7 +102,6 @@ public class TrainingServiceImpl implements TrainingService {
     public void removeParticipantFromTraining(String trainingCode, Long clientId) {
         Training training = getTraining(trainingCode);
         ClientDto clientDto = clientService.getClientById(clientId);
-        System.out.println(clientDto.getEmail());
         training.removeParticipant(clientDto.getEmail());
         trainingRepository.save(training);
     }

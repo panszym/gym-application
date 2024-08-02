@@ -3,6 +3,7 @@ package com.gym.training.service;
 import com.gym.training.exception.TrainingException;
 import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
+import com.gym.training.model.TrainingMember;
 import com.gym.training.repository.TrainingRepository;
 import org.junit.jupiter.api.Test;
 
@@ -269,6 +270,7 @@ class TrainingServiceImplTest {
         assertThat(exception)
                 .isInstanceOf(TrainingException.class);
     }
+
     @Test
     void trainingSignup_trainingExistsInTheSystem_clientExistsInSystem_clientStatusInactive_premiumTicket_trainingStatusIsActive_shouldThrowTrainingException() {
         //given
@@ -340,7 +342,84 @@ class TrainingServiceImplTest {
     }
 
     @Test
-    void removeParticipantFromTraining() {
+    void removeParticipantFromTraining_trainingDoesNotExist_clientExists_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        //when
+        testTraining.getTrainingMemberList().add(new TrainingMember(testClientDto.getFirstName(), testClientDto.getEmail()));
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.empty());
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var exception = catchThrowable(() -> toTest.removeParticipantFromTraining(testTraining.getTrainingCode(), anyLong()));
+        //then
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void removeParticipantFromTraining_trainingExists_clientExists_clientIsNotEnrolledToTraining_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        //when
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var exception = catchThrowable(() -> toTest.removeParticipantFromTraining(testTraining.getTrainingCode(), anyLong()));
+        //then
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void removeParticipantFromTraining_trainingExists_clientExists_clientIsEnrolledToTraining_trainingStatusFULL_shouldChangeStatusToActive() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        //when
+        testTraining.getTrainingMemberList().add(new TrainingMember(testClientDto.getFirstName(), testClientDto.getEmail()));
+        testTraining.setMaxParticipantsNumber(5);
+        testTraining.setParticipantsNumber(5);
+        testTraining.setStatus(Training.Status.FULL);
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        toTest.removeParticipantFromTraining(testTraining.getTrainingCode(), anyLong());
+        var resultParticipantNumber = testTraining.getParticipantsNumber();
+        var resultStatus = testTraining.getStatus();
+        //then
+        assertThat(resultParticipantNumber)
+                .isEqualTo(4);
+        assertThat(resultStatus)
+                .isEqualTo(Training.Status.ACTIVE);
+
+    }
+
+    @Test
+    void removeParticipantFromTraining_trainingExists_clientExists_clientIsEnrolledToTraining_shouldRemoveParticipantFromTraining() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var mockClientService = mock(ClientService.class);
+        var testTraining = getTestTraining();
+        var testClientDto = getTestClientDto();
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, mockClientService);
+        //when
+        testTraining.getTrainingMemberList().add(new TrainingMember(testClientDto.getFirstName(), testClientDto.getEmail()));
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(testTraining));
+        when(mockClientService.getClientById(anyLong())).thenReturn(testClientDto);
+        var participantNumberBeforeRemove = testTraining.getTrainingMemberList().size();
+        toTest.removeParticipantFromTraining(testTraining.getTrainingCode(), anyLong());
+        var result = testTraining.getTrainingMemberList().size();
+        //then
+        assertThat(participantNumberBeforeRemove - 1)
+                .isEqualTo(result);
     }
 
     @Test
@@ -411,6 +490,7 @@ class TrainingServiceImplTest {
         training.setMaxParticipantsNumber(10);
         return training;
     }
+
     ClientDto getTestClientDto() {
         ClientDto clientDto = new ClientDto();
         clientDto.setFirstName("testFirstName");
