@@ -3,13 +3,13 @@ package com.gym.clients.service;
 import com.gym.clients.exception.ClientException;
 import com.gym.clients.exception.Error;
 import com.gym.clients.model.Client;
+import com.gym.clients.model.Role;
 import com.gym.clients.repository.ClientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -61,6 +61,7 @@ public class ClientServiceImpl implements ClientService {
     public Client addClient(Client client) {
         logger.info("addClient method.");
         checkClientEmail(client);
+        client.activateClient();
         clientRepository.save(client);
         return client;
     }
