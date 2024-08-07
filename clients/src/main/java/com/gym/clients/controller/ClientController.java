@@ -1,6 +1,7 @@
 package com.gym.clients.controller;
 
 import com.gym.clients.model.Client;
+import com.gym.clients.model.ClientDto;
 import com.gym.clients.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public Client getClient(@PathVariable Long id) {
+    public ClientDto getClient(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientById(id);
     }

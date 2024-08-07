@@ -3,13 +3,13 @@ package com.gym.clients.service;
 import com.gym.clients.exception.ClientException;
 import com.gym.clients.exception.Error;
 import com.gym.clients.model.Client;
+import com.gym.clients.model.ClientDto;
 import com.gym.clients.repository.ClientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -27,10 +27,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClientById(Long id) {
+    public ClientDto getClientById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
         logger.info("getClient by id method.");
-        return client;
+        ClientDto clientDto = new ClientDto(client.getFirstName(), client.getLastName(), client.getEmail(), client.getStatus(), client.getTicket());
+        return clientDto;
     }
 
     @Override
