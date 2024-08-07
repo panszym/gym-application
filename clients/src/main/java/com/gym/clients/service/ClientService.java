@@ -15,7 +15,7 @@ public interface ClientService {
 
     List<Client> getClientsByTicket(Client.Ticket ticket);
 
-    Client addClient(Client client);
+
 
     Client putClient(Client client, Long id);
 

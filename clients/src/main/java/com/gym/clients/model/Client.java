@@ -5,11 +5,26 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @SequenceGenerator(name = "idGenerator", initialValue = 1, allocationSize = 1)
 @Table(name = "clients")
-public class Client {
+public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
     private Long id;
@@ -18,6 +33,9 @@ public class Client {
     private String firstName;
     @NotBlank(message = "LastName must not be blank.")
     private String lastName;
+    @NotBlank
+    @Size(min = 5)
+    private String password;
     @NotBlank(message = "Email must not be blank.")
     @Email
     private String email;
@@ -29,51 +47,8 @@ public class Client {
     @NotNull(message = "Status must not be null.")
     @Enumerated(EnumType.STRING)
     private Ticket ticket;
-
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public void updateClientPut(Client client) {
         setFirstName(client.getFirstName());
@@ -88,15 +63,49 @@ public class Client {
         if (!StringUtils.isEmpty(client.getLastName())) setLastName(client.getLastName());
         if (client.getStatus() != null) setStatus(client.getStatus());
         if (client.getTicket() != null) setTicket(client.getTicket());
+        setRole(Role.ADMIN);
 
     }
 
+    public void activateClient(){
+        setRole(Role.CLIENT);
+        setStatus(Status.ACTIVE);
+    }
     public void toggleStatus(){
         if (Status.ACTIVE.equals(this.getStatus())){
             setStatus(Status.INACTIVE);
         }else setStatus(Status.ACTIVE);
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     public enum Status {
         ACTIVE,

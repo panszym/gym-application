@@ -1,7 +1,9 @@
 package com.gym.clients.service;
 
+import com.gym.clients.config.JwtService;
 import com.gym.clients.exception.ClientException;
 import com.gym.clients.model.Client;
+import com.gym.clients.model.Role;
 import com.gym.clients.repository.ClientRepository;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +25,7 @@ class ClientServiceImplTest {
     void getClientById_clientIsNotInTheSystem_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
+        var mockJwtService = mock(JwtService.class);
         var toTest = new ClientServiceImpl(mockClientRepository);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -98,20 +101,6 @@ class ClientServiceImplTest {
         var result = toTest.getClientsByTicket(Client.Ticket.PREMIUM);
         //then
         assertNotNull(result, "Response is null");
-    }
-
-    @Test
-    void addClient_clientIsAlreadyInSystem_shouldReturnClientException() {
-        //given
-        var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
-        var mockClient = mock(Client.class);
-        //when
-        when(mockClientRepository.existsByEmail(mockClient.getEmail())).thenReturn(true);
-        var exception = catchThrowable(() -> toTest.addClient(mockClient));
-        //then
-        assertThat(exception)
-                .isInstanceOf(ClientException.class);
     }
 
     @Test
@@ -209,6 +198,7 @@ class ClientServiceImplTest {
         client.setLastName("Kowalski");
         client.setEmail("jKowalski@gmail.com");
         client.setStatus(Client.Status.ACTIVE);
+        client.setRole(Role.USER);
         return client;
     }
 }

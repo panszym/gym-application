@@ -18,7 +18,8 @@ public class ClientExceptionHandler {
             response = ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorInfo(e.getError().getMessage()));
         }
         if (Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS.equals(e.getError())
-                || Error.THERE_IS_NOT_REQUIRED_PARAMETER_TICKET.equals(e.getError())) {
+                || Error.THERE_IS_NOT_REQUIRED_PARAMETER_TICKET.equals(e.getError())
+                || Error.THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM.equals(e.getError())) {
             response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getError().getMessage()));
         }
         return response;

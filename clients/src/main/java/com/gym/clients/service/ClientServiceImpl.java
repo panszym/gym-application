@@ -1,5 +1,8 @@
 package com.gym.clients.service;
 
+import com.gym.clients.auth.AuthenticationRequest;
+import com.gym.clients.auth.AuthenticationResponse;
+import com.gym.clients.config.JwtService;
 import com.gym.clients.exception.ClientException;
 import com.gym.clients.exception.Error;
 import com.gym.clients.model.Client;
@@ -7,6 +10,9 @@ import com.gym.clients.model.ClientDto;
 import com.gym.clients.repository.ClientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,14 +65,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client addClient(Client client) {
-        logger.info("addClient method.");
-        checkClientEmail(client);
-        clientRepository.save(client);
-        return client;
-    }
-
-    @Override
     public void deleteClient(Long id) {
         logger.info("deleteClient method.");
         if (!clientRepository.existsById(id)) throw new ClientException(Error.CLIENT_NOT_FOUND);
@@ -102,10 +100,5 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
         client.toggleStatus();
         clientRepository.save(client);
-    }
-
-    private void checkClientEmail(Client client) {
-        if (clientRepository.existsByEmail(client.getEmail()))
-            throw new ClientException(Error.EMAIL_ALREADY_EXIST);
     }
 }
