@@ -1,9 +1,13 @@
 package com.gym.clients.service;
 
+import com.gym.clients.config.JwtService;
 import com.gym.clients.exception.ClientException;
 import com.gym.clients.model.Client;
+import com.gym.clients.model.Role;
 import com.gym.clients.repository.ClientRepository;
+import net.minidev.json.writer.BeansMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +27,8 @@ class ClientServiceImplTest {
     void getClientById_clientIsNotInTheSystem_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var mockJwtService = mock(JwtService.class);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
         var exception = catchThrowable(() -> toTest.getClientById(1L));
@@ -37,7 +42,7 @@ class ClientServiceImplTest {
         //given
         var mockClientRepository = mock(ClientRepository.class);
         var mockClient = mock(Client.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(mockClient));
         var result = toTest.getClientById(1L);
@@ -49,7 +54,7 @@ class ClientServiceImplTest {
     void getClientsByStatus_noStatus_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         var mockClient1 = mock(Client.class);
         var mockClient2 = mock(Client.class);
         //when
@@ -66,7 +71,7 @@ class ClientServiceImplTest {
         var mockClientRepository = mock(ClientRepository.class);
         var mockClient1 = mock(Client.class);
         var mockClient2 = mock(Client.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         //when
         when(mockClientRepository.findAllByStatus(Client.Status.ACTIVE)).thenReturn(List.of(mockClient1, mockClient2));
         var result = toTest.getClientsByStatus(Client.Status.ACTIVE);
@@ -78,7 +83,7 @@ class ClientServiceImplTest {
     void getClientsByTicket_noTicket_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         //when
         var exception = catchThrowable(() -> toTest.getClientsByTicket(null));
         //then
@@ -92,7 +97,7 @@ class ClientServiceImplTest {
         var mockClientRepository = mock(ClientRepository.class);
         var mockClient1 = mock(Client.class);
         var mockClient2 = mock(Client.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         //when
         when(mockClientRepository.findAllByTicket(Client.Ticket.PREMIUM)).thenReturn(List.of(mockClient1, mockClient2));
         var result = toTest.getClientsByTicket(Client.Ticket.PREMIUM);
@@ -104,11 +109,11 @@ class ClientServiceImplTest {
     void addClient_clientIsAlreadyInSystem_shouldReturnClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         var mockClient = mock(Client.class);
         //when
         when(mockClientRepository.existsByEmail(mockClient.getEmail())).thenReturn(true);
-        var exception = catchThrowable(() -> toTest.addClient(mockClient));
+        var exception = catchThrowable(() -> toTest.registerClient(mockClient));
         //then
         assertThat(exception)
                 .isInstanceOf(ClientException.class);
@@ -118,7 +123,7 @@ class ClientServiceImplTest {
     void putClient_ClientIsNotInSystem_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         var testClient = getTestClient();
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -132,7 +137,7 @@ class ClientServiceImplTest {
     void putClient_ClientIsInSystem_DifferentEmail_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         var testClient = getTestClient();
         var testClient1 = getTestClient();
         testClient1.setEmail("Kowalski@gmail.com");
@@ -148,7 +153,7 @@ class ClientServiceImplTest {
     void patchClient_ClientIsNotInSystem_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         var testClient = getTestClient();
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -162,7 +167,7 @@ class ClientServiceImplTest {
     void toggleStatus_clientIsNotInSystem_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
         var exception = catchThrowable(() -> toTest.getClientById(1L));
@@ -176,7 +181,7 @@ class ClientServiceImplTest {
         //given
         var mockClientRepository = mock(ClientRepository.class);
         var testClient = getTestClient();
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         testClient.setStatus(Client.Status.ACTIVE);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(testClient));
@@ -192,7 +197,7 @@ class ClientServiceImplTest {
         //given
         var mockClientRepository = mock(ClientRepository.class);
         var testClient = getTestClient();
-        var toTest = new ClientServiceImpl(mockClientRepository);
+        var toTest = new ClientServiceImpl(mockClientRepository, null, null, null);
         testClient.setStatus(Client.Status.INACTIVE);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(testClient));
@@ -209,6 +214,7 @@ class ClientServiceImplTest {
         client.setLastName("Kowalski");
         client.setEmail("jKowalski@gmail.com");
         client.setStatus(Client.Status.ACTIVE);
+        client.setRole(Role.USER);
         return client;
     }
 }

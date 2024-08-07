@@ -1,5 +1,7 @@
 package com.gym.clients.controller;
 
+import com.gym.clients.auth.AuthenticationRequest;
+import com.gym.clients.auth.AuthenticationResponse;
 import com.gym.clients.model.Client;
 import com.gym.clients.service.ClientService;
 import jakarta.validation.Valid;
@@ -46,11 +48,18 @@ public class ClientController {
     }
 
     @PostMapping
-    public Client addClient(@RequestBody @Valid Client client) {
+    public ResponseEntity<AuthenticationResponse> registerClient(@RequestBody @Valid Client client) {
         logger.info("Add client to database");
-        return clientService.addClient(client);
+        var token = clientService.registerClient(client);
+        return ResponseEntity.ok(token);
     }
 
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticateClient(@RequestBody AuthenticationRequest request) {
+        logger.info("Authentication client.");
+        var token = clientService.authenticate(request);
+        return ResponseEntity.ok(token);
+    }
     @PostMapping("/emails")
     public List<Client> getClientsByEmail(@RequestBody List<String> emails) {
         logger.info("Display client by email.");

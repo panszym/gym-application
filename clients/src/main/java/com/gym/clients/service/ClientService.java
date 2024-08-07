@@ -1,5 +1,7 @@
 package com.gym.clients.service;
 
+import com.gym.clients.auth.AuthenticationRequest;
+import com.gym.clients.auth.AuthenticationResponse;
 import com.gym.clients.model.Client;
 
 import java.util.List;
@@ -14,7 +16,8 @@ public interface ClientService {
 
     List<Client> getClientsByTicket(Client.Ticket ticket);
 
-    Client addClient(Client client);
+    AuthenticationResponse authenticate(AuthenticationRequest request);
+    AuthenticationResponse registerClient(Client client);
 
     Client putClient(Client client, Long id);
 
