@@ -20,17 +20,9 @@ import java.util.List;
 public class ClientServiceImpl implements ClientService {
     Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);
     private final ClientRepository clientRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    private final JwtService jwtService;
-
-    private final AuthenticationManager authenticationManager;
-
-    public ClientServiceImpl(ClientRepository clientRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public ClientServiceImpl(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -71,30 +63,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public AuthenticationResponse registerClient(Client client) {
-        logger.info("registerClient method.");
-        checkClientEmail(client);
-        client.activateClient();
-        client.setPassword(passwordEncoder.encode(client.getPassword()));
-        clientRepository.save(client);
-        var jwtToken = jwtService.generateToken(client);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
-    }
-
-    @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var client = clientRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ClientException(Error.THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM));
-        var jwtToken = jwtService.generateToken(client);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
-    }
-
-    @Override
     public void deleteClient(Long id) {
         logger.info("deleteClient method.");
         if (!clientRepository.existsById(id)) throw new ClientException(Error.CLIENT_NOT_FOUND);
@@ -130,10 +98,5 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
         client.toggleStatus();
         clientRepository.save(client);
-    }
-
-    private void checkClientEmail(Client client) {
-        if (clientRepository.existsByEmail(client.getEmail()))
-            throw new ClientException(Error.EMAIL_ALREADY_EXIST);
     }
 }
