@@ -22,6 +22,9 @@ public class ClientExceptionHandler {
                 || Error.THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM.equals(e.getError())) {
             response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getError().getMessage()));
         }
+        if(Error.THERE_IS_NOT_YOUR_ACCOUNT.equals(e.getError())){
+            response = ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorInfo(e.getError().getMessage()));
+        }
         return response;
     }
 }

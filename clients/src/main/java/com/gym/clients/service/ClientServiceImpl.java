@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -30,6 +31,18 @@ public class ClientServiceImpl implements ClientService {
     public List<Client> getClients() {
         logger.info("getClients method.");
         return clientRepository.findAll();
+    }
+
+    @Override
+    public ClientDto getClientById(Principal principal) {
+        Client client = clientRepository.findByEmail(principal.getName()).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
+        logger.info("getClient by id method.");
+        if (!principal.getName().equals(client.getUsername())) {
+            throw new ClientException(Error.THERE_IS_NOT_YOUR_ACCOUNT);
+        }
+        ClientDto clientDto = new ClientDto();
+        clientDto.ClientToClientDtoAdapter(client);
+        return clientDto;
     }
 
     @Override

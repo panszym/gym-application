@@ -25,7 +25,6 @@ class ClientServiceImplTest {
     void getClientById_clientIsNotInTheSystem_shouldThrowClientException() {
         //given
         var mockClientRepository = mock(ClientRepository.class);
-        var mockJwtService = mock(JwtService.class);
         var toTest = new ClientServiceImpl(mockClientRepository);
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,10 +32,17 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ClientDto getClient(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientById(id);
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public ClientDto getClient(Principal principal) {
+        logger.info("Display client info.");
+        return clientService.getClientById(principal);
     }
 
     @GetMapping("/status")
