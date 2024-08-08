@@ -36,7 +36,8 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto getClientById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
         logger.info("getClient by id method.");
-        ClientDto clientDto = new ClientDto(client.getFirstName(), client.getLastName(), client.getEmail(), client.getStatus(), client.getTicket());
+        ClientDto clientDto = new ClientDto();
+        clientDto.ClientToClientDtoAdapter(client);
         return clientDto;
     }
 
@@ -85,12 +86,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client patchClient(Client client, Long id) {
+    public ClientDto patchClient(Client client, Long id) {
         logger.info("patchClient method.");
         return clientRepository.findById(id)
                 .map(dbClient -> {
                     dbClient.updateClientPatch(client);
-                    return clientRepository.save(dbClient);
+                    clientRepository.save(dbClient);
+                    ClientDto clientDto = new ClientDto();
+                    clientDto.ClientToClientDtoAdapter(dbClient);
+                    return clientDto;
                 }).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
     }
 

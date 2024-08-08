@@ -19,7 +19,7 @@ public interface ClientService {
 
     Client putClient(Client client, Long id);
 
-    Client patchClient(Client client, Long id);
+    ClientDto patchClient(Client client, Long id);
 
     void deleteClient(Long id);
 

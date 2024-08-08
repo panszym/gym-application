@@ -198,7 +198,7 @@ class ClientServiceImplTest {
         client.setLastName("Kowalski");
         client.setEmail("jKowalski@gmail.com");
         client.setStatus(Client.Status.ACTIVE);
-        client.setRole(Role.USER);
+        client.setRole(Role.CLIENT);
         return client;
     }
 }

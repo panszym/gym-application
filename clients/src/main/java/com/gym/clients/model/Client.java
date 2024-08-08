@@ -22,11 +22,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@SequenceGenerator(name = "idGenerator", initialValue = 1, allocationSize = 1)
 @Table(name = "clients")
 public class Client implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "FirstName must not be blank.")
@@ -63,8 +62,6 @@ public class Client implements UserDetails {
         if (!StringUtils.isEmpty(client.getLastName())) setLastName(client.getLastName());
         if (client.getStatus() != null) setStatus(client.getStatus());
         if (client.getTicket() != null) setTicket(client.getTicket());
-        setRole(Role.ADMIN);
-
     }
 
     public void activateClient(){
