@@ -62,7 +62,6 @@ public class ClientServiceImpl implements ClientService {
         } else throw new ClientException(Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS);
     }
 
-    ;
 
     @Override
     public List<Client> getClientsByTicket(Client.Ticket ticket) {
