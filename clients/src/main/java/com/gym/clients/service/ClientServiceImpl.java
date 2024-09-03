@@ -78,6 +78,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client getClientByEmail(String email) {
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new ClientException(Error.THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM));
+        logger.info("getClientByEmail method.");
+        return client;
+    }
+
+    @Override
     public void deleteClient(Long id) {
         logger.info("deleteClient method.");
         if (!clientRepository.existsById(id)) throw new ClientException(Error.CLIENT_NOT_FOUND);
@@ -117,4 +125,6 @@ public class ClientServiceImpl implements ClientService {
         client.toggleStatus();
         clientRepository.save(client);
     }
+
+
 }

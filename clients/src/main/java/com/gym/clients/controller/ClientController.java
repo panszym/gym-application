@@ -6,6 +6,7 @@ import com.gym.clients.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,13 @@ public class ClientController {
     public List<Client> getClientsByEmail(@RequestBody List<String> emails) {
         logger.info("Display client by email.");
         return clientService.getClientsByEmail(emails);
+    }
+
+    @PostMapping("/email")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Client getClientByEmail(@RequestParam String email) {
+        logger.info("Display client by email.");
+        return clientService.getClientByEmail(email);
     }
 
     @DeleteMapping("/{id}")

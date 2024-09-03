@@ -28,5 +28,7 @@ public interface ClientService {
 
     List<Client> getClientsByEmail(List<String> emails);
 
+    Client getClientByEmail(String email);
+
 
 }
