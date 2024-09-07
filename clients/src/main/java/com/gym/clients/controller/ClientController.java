@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
@@ -68,7 +69,6 @@ public class ClientController {
     }
 
     @PostMapping("/email")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Client getClientByEmail(@RequestParam String email) {
         logger.info("Display client by email.");
         return clientService.getClientByEmail(email);
