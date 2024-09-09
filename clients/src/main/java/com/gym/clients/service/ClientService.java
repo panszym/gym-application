@@ -12,7 +12,7 @@ public interface ClientService {
 
     ClientDto getClientById( Principal principal);
 
-    ClientDto getClientById(Long id);
+    Client getClientById(Long id);
 
     List<Client> getClientsByStatus(Client.Status status);
 

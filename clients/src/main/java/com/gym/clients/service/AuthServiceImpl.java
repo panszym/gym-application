@@ -10,6 +10,8 @@ import com.gym.clients.repository.ClientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,18 +44,31 @@ public class AuthServiceImpl implements AuthService {
         var jwtToken = jwtService.generateToken(client);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .email(client.getEmail())
                 .build();
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws Exception {
+        extracted(request);
         var client = clientRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ClientException(Error.THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM));
         var jwtToken = jwtService.generateToken(client);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .email(client.getEmail())
+                .id(client.getId())
                 .build();
+    }
+
+    private void extracted(AuthenticationRequest request) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        }catch (DisabledException e) {
+            throw new Exception("Profile disabled");
+        }catch (BadCredentialsException e) {
+            throw new ClientException((Error.WRONG_PASSWORD));
+        }
     }
 
     private void checkClientEmail(Client client) {

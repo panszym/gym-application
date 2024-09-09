@@ -46,12 +46,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto getClientById(Long id) {
+    public Client getClientById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
         logger.info("getClient by id method.");
-        ClientDto clientDto = new ClientDto();
-        clientDto.ClientToClientDtoAdapter(client);
-        return clientDto;
+        return client;
     }
 
     @Override

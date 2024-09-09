@@ -6,7 +6,7 @@ import com.gym.clients.model.Client;
 
 public interface AuthService {
 
-    AuthenticationResponse authenticate(AuthenticationRequest request);
+    AuthenticationResponse authenticate(AuthenticationRequest request) throws Exception;
 
     AuthenticationResponse registerClient(Client client);
 }

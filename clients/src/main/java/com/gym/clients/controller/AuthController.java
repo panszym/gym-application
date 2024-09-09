@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticateClient(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticateClient(@RequestBody AuthenticationRequest request) throws Exception {
         logger.info("Authentication client.");
         var token = authService.authenticate(request);
         logger.info(token.toString());

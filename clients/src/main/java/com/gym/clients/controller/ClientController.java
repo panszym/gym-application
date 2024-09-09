@@ -34,14 +34,14 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ClientDto getClient(@PathVariable Long id) {
+    @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
+    public Client getClient(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientById(id);
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasAuthority('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
     public ClientDto getClient(Principal principal) {
         logger.info("Display client info.");
         return clientService.getClientById(principal);
@@ -69,6 +69,7 @@ public class ClientController {
     }
 
     @PostMapping("/email")
+    @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
     public Client getClientByEmail(@RequestParam String email) {
         logger.info("Display client by email.");
         return clientService.getClientByEmail(email);
