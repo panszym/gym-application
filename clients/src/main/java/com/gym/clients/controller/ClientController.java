@@ -6,7 +6,6 @@ import com.gym.clients.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +37,13 @@ public class ClientController {
     public Client getClient(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientById(id);
+    }
+
+    @GetMapping("/admin/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ClientDto getClientAdmin(@PathVariable Long id) {
+        logger.info("Display client info.");
+        return clientService.getClientByIdAdmin(id);
     }
 
     @GetMapping("/me")
