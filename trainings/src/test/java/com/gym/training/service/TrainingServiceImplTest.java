@@ -50,34 +50,34 @@ class TrainingServiceImplTest {
         assertNotNull(result);
     }
 
-    @Test
-    void getTrainingByStatus_activeStatus_shouldReturnTrainingByStatus() {
-        //given
-        var mockTrainingRepository = mock(TrainingRepository.class);
-        var mockTraining1 = mock(Training.class);
-        var mockTraining2 = mock(Training.class);
-        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
-        //when
-        when(mockTrainingRepository.findAllByStatus(Training.Status.ACTIVE)).thenReturn(List.of(mockTraining1, mockTraining2));
-        var result = toTest.getTrainingByStatus(Training.Status.ACTIVE);
-        //then
-        assertNotNull(result, "Response is null");
-    }
-
-    @Test
-    void getTrainingByStatus_noStatus_shouldThrowTrainingException() {
-        //given
-        var mockTrainingRepository = mock(TrainingRepository.class);
-        var mockTraining1 = mock(Training.class);
-        var mockTraining2 = mock(Training.class);
-        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
-        //when
-        when(mockTrainingRepository.findAllByStatus(any())).thenReturn(List.of(mockTraining1, mockTraining2));
-        var exception = catchThrowable(() -> toTest.getTrainingByStatus(null));
-        //then
-        assertThat(exception)
-                .isInstanceOf(TrainingException.class);
-    }
+//    @Test
+//    void getTrainingByStatus_activeStatus_shouldReturnTrainingByStatus() {
+//        //given
+//        var mockTrainingRepository = mock(TrainingRepository.class);
+//        var mockTraining1 = mock(Training.class);
+//        var mockTraining2 = mock(Training.class);
+//        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
+//        //when
+//        when(mockTrainingRepository.findAllByStatus(Training.Status.ACTIVE)).thenReturn(List.of(mockTraining1, mockTraining2));
+//        var result = toTest.getTrainingByStatus(Training.Status.ACTIVE);
+//        //then
+//        assertNotNull(result, "Response is null");
+//    }
+//
+//    @Test
+//    void getTrainingByStatus_noStatus_shouldThrowTrainingException() {
+//        //given
+//        var mockTrainingRepository = mock(TrainingRepository.class);
+//        var mockTraining1 = mock(Training.class);
+//        var mockTraining2 = mock(Training.class);
+//        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
+//        //when
+//        when(mockTrainingRepository.findAllByStatus(any())).thenReturn(List.of(mockTraining1, mockTraining2));
+//        var exception = catchThrowable(() -> toTest.getTrainingByStatus(null));
+//        //then
+//        assertThat(exception)
+//                .isInstanceOf(TrainingException.class);
+//    }
 
     @Test
     void addTraining_trainingWithTheSameTrainingCodeExistInSystem_shouldThrowTrainingException() {

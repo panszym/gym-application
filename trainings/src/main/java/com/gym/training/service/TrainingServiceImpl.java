@@ -6,6 +6,8 @@ import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
 import com.gym.training.model.TrainingMember;
 import com.gym.training.repository.TrainingRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> getAllTraining() {
-        return trainingRepository.findAll();
+    public Page<Training> getAllTraining(Pageable page) {
+        return trainingRepository.findAll(page);
     }
 
     @Override
@@ -34,10 +36,17 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> getTrainingByStatus(Training.Status status) {
+    public Page<Training> getTrainingByStatus(Training.Status status, Pageable page) {
         if (status != null) {
-            return trainingRepository.findAllByStatus(status);
+            return trainingRepository.findAllByStatus(status, page);
         } else throw new TrainingException(Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS);
+    }
+
+    @Override
+    public Page<Training> getTrainingByCategory(Training.Category category, Pageable page) {
+        if (category != null) {
+            return trainingRepository.findAllByCategory(category, page);
+        } else throw new TrainingException(Error.THERE_IS_NOT_REQUIRED_PARAMETER_CATEGORY);
     }
 
     @Override

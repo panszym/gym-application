@@ -2,16 +2,21 @@ package com.gym.training.service;
 
 import com.gym.training.model.ClientDto;
 import com.gym.training.model.Training;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface TrainingService {
 
-    List<Training> getAllTraining();
+    Page<Training> getAllTraining(Pageable page);
 
     Training getTraining(String trainingCode);
 
-    List<Training> getTrainingByStatus(Training.Status status);
+    Page<Training> getTrainingByStatus(Training.Status status, Pageable page);
+
+
+    Page<Training> getTrainingByCategory(Training.Category category, Pageable page);
 
     Training addTraining(Training training);
 

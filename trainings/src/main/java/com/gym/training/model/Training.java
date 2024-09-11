@@ -40,6 +40,9 @@ public class Training {
     @NotNull
     private Status status;
 
+    @NotNull
+    private Category category;
+
     private List<TrainingMember> trainingMemberList = new ArrayList<>();
 
 
@@ -47,6 +50,17 @@ public class Training {
         ACTIVE,
         INACTIVE,
         FULL
+    }
+
+    public enum Category {
+        FBW,
+        CARDIO,
+        BACK,
+        CHEST,
+        BICEPS_TRICEPS,
+        LEGS,
+        ABS,
+        ARM
     }
 
     private void validateParticipants() {
@@ -80,6 +94,7 @@ public class Training {
         setDateTime(training.getDateTime());
         setMaxParticipantsNumber(training.getMaxParticipantsNumber());
         setStatus(training.getStatus());
+        setCategory(training.getCategory());
     }
 
     public void updateTrainingPatch(Training training) {
@@ -88,6 +103,7 @@ public class Training {
         if (training.getDateTime() != null) setDateTime(training.getDateTime());
         if (training.getMaxParticipantsNumber() != null) setMaxParticipantsNumber(training.getMaxParticipantsNumber());
         if (training.getStatus() != null) setStatus(training.getStatus());
+        if (training.getCategory() != null) setCategory(training.getCategory());
     }
 
     public void addParticipant() {
