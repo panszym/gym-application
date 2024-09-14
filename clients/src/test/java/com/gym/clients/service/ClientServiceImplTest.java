@@ -1,6 +1,5 @@
 package com.gym.clients.service;
 
-import com.gym.clients.config.JwtService;
 import com.gym.clients.exception.ClientException;
 import com.gym.clients.model.Client;
 import com.gym.clients.model.Role;
@@ -43,6 +42,58 @@ class ClientServiceImplTest {
         //when
         when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(mockClient));
         var result = toTest.getClientById(1L);
+        //then
+        assertNotNull(result, "Response is null");
+    }
+
+    @Test
+    void getClientByIdAdmin_clientIsNotInTheSystem_shouldThrowClientException() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
+        var exception = catchThrowable(() -> toTest.getClientByIdAdmin(1L));
+        //then
+        assertThat(exception)
+                .isInstanceOf(ClientException.class);
+    }
+
+    @Test
+    void getClientByIdAdmin_clientIsInTheSystem_shouldGetClientById() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var mockClient = mock(Client.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(mockClient));
+        var result = toTest.getClientByIdAdmin(1L);
+        //then
+        assertNotNull(result, "Response is null");
+    }
+
+    @Test
+    void getClientByIdFeign_clientIsNotInTheSystem_shouldThrowClientException() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.empty());
+        var exception = catchThrowable(() -> toTest.getClientByIdFeign(1L));
+        //then
+        assertThat(exception)
+                .isInstanceOf(ClientException.class);
+    }
+
+    @Test
+    void getClientByIdFeign_clientIsInTheSystem_shouldGetClientById() {
+        //given
+        var mockClientRepository = mock(ClientRepository.class);
+        var mockClient = mock(Client.class);
+        var toTest = new ClientServiceImpl(mockClientRepository);
+        //when
+        when(mockClientRepository.findById(anyLong())).thenReturn(Optional.of(mockClient));
+        var result = toTest.getClientByIdFeign(1L);
         //then
         assertNotNull(result, "Response is null");
     }

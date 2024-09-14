@@ -6,13 +6,18 @@ import com.gym.training.model.Training;
 import com.gym.training.model.TrainingMember;
 import com.gym.training.repository.TrainingRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -50,37 +55,8 @@ class TrainingServiceImplTest {
         assertNotNull(result);
     }
 
-//    @Test
-//    void getTrainingByStatus_activeStatus_shouldReturnTrainingByStatus() {
-//        //given
-//        var mockTrainingRepository = mock(TrainingRepository.class);
-//        var mockTraining1 = mock(Training.class);
-//        var mockTraining2 = mock(Training.class);
-//        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
-//        //when
-//        when(mockTrainingRepository.findAllByStatus(Training.Status.ACTIVE)).thenReturn(List.of(mockTraining1, mockTraining2));
-//        var result = toTest.getTrainingByStatus(Training.Status.ACTIVE);
-//        //then
-//        assertNotNull(result, "Response is null");
-//    }
-//
-//    @Test
-//    void getTrainingByStatus_noStatus_shouldThrowTrainingException() {
-//        //given
-//        var mockTrainingRepository = mock(TrainingRepository.class);
-//        var mockTraining1 = mock(Training.class);
-//        var mockTraining2 = mock(Training.class);
-//        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
-//        //when
-//        when(mockTrainingRepository.findAllByStatus(any())).thenReturn(List.of(mockTraining1, mockTraining2));
-//        var exception = catchThrowable(() -> toTest.getTrainingByStatus(null));
-//        //then
-//        assertThat(exception)
-//                .isInstanceOf(TrainingException.class);
-//    }
-
     @Test
-    void addTraining_trainingWithTheSameTrainingCodeExistInSystem_shouldThrowTrainingException() {
+    void getTraining_trainingWithTheSameTrainingCodeExistInSystem_shouldThrowTrainingException() {
         //given
         var mockTrainingRepository = mock(TrainingRepository.class);
         var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
