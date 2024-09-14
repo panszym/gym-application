@@ -1,5 +1,6 @@
 package com.gym.training.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gym.training.exception.Error;
 import com.gym.training.exception.TrainingException;
 import io.micrometer.common.util.StringUtils;
@@ -27,6 +28,7 @@ public class Training {
 
     private String description;
 
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dateTime;
 
     @Min(0)

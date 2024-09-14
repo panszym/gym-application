@@ -15,9 +15,9 @@ public interface ClientService {
     @GetMapping("/clients")
     List<ClientDto> getClients();
 
-    @GetMapping("/clients/{clientId}")
+    @GetMapping("/clients/feign/{clientId}")
     ClientDto getClientById(@PathVariable Long clientId);
 
-    @PostMapping("/clients/emails")
+    @PostMapping("/clients/feign/emails")
     List<ClientDto> getClientsByEmail(@RequestBody List<String> emails);
 }

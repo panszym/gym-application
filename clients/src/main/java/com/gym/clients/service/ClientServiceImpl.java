@@ -62,6 +62,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client getClientByIdFeign(Long id) {
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientException(Error.CLIENT_NOT_FOUND));
+        logger.info("getClient by id method.");
+        return client;
+    }
+
+    @Override
     public List<Client> getClientsByStatus(Client.Status status) {
         logger.info("getClient by status method.");
         if (status != null) {

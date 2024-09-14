@@ -14,6 +14,8 @@ public interface ClientService {
 
     ClientDto getClientByIdAdmin(Long id);
 
+    Client getClientByIdFeign(Long id);
+
     Client getClientById(Long id);
 
     List<Client> getClientsByStatus(Client.Status status);

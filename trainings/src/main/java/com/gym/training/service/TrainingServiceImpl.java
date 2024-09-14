@@ -1,5 +1,6 @@
 package com.gym.training.service;
 
+
 import com.gym.training.exception.Error;
 import com.gym.training.exception.TrainingException;
 import com.gym.training.model.ClientDto;

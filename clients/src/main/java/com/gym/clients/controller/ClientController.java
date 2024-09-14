@@ -46,6 +46,12 @@ public class ClientController {
         return clientService.getClientByIdAdmin(id);
     }
 
+    @GetMapping("/feign/{id}")
+    public Client getClientFeign(@PathVariable Long id) {
+        logger.info("Display client info.");
+        return clientService.getClientByIdFeign(id);
+    }
+
     @GetMapping("/me")
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
     public ClientDto getClient(Principal principal) {
@@ -67,8 +73,7 @@ public class ClientController {
         return clientService.getClientsByTicket(ticket);
     }
 
-    @PostMapping("/emails")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/feign/emails")
     public List<Client> getClientsByEmail(@RequestBody List<String> emails) {
         logger.info("Display client by email.");
         return clientService.getClientsByEmail(emails);
