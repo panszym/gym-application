@@ -27,6 +27,9 @@ public interface TrainingService {
     Training patchTraining(Training training, String trainingCode);
 
     void trainingSignup(String trainingCode, Long clientId);
+
+    List<Training> getClientTraining(String email);
+
     List<ClientDto> getTrainingMembers(String trainingCode);
 
     void removeParticipantFromTraining(String trainingCode, Long clientId);

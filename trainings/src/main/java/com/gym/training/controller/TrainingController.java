@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
+@CrossOrigin()
 @RestController
 @RequestMapping("/training")
 public class TrainingController {
@@ -35,6 +35,12 @@ public class TrainingController {
     Training getTraining(@PathVariable String trainingCode) {
         logger.info("Displayed training by trainingCode.");
         return trainingService.getTraining(trainingCode);
+    }
+
+    @GetMapping("/client")
+    List<Training> getClientTraining(@RequestParam String email) {
+        logger.info("Displayed client's training.");
+        return trainingService.getClientTraining(email.substring(1, email.length() - 1));
     }
 
     @GetMapping("/status")

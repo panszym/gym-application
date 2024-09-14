@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,6 +107,20 @@ public class TrainingServiceImpl implements TrainingService {
                 .map(TrainingMember::getEmail)
                 .collect(Collectors.toList());
         return clientService.getClientsByEmail(participantsEmails);
+    }
+
+    @Override
+    public List<Training> getClientTraining(String email) {
+        List<Training> training = trainingRepository.findAll();
+        List<Training> clientTraining = new ArrayList<>();
+        for (Training train: training) {
+            List<String> emails = train.getTrainingMemberList()
+                    .stream()
+                    .map(TrainingMember::getEmail)
+                    .toList();
+            if(emails.contains(email))clientTraining.add(train);
+        }
+        return clientTraining;
     }
 
     @Override
