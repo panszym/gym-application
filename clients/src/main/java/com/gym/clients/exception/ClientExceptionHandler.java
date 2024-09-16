@@ -20,7 +20,9 @@ public class ClientExceptionHandler {
         if (Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS.equals(e.getError())
                 || Error.THERE_IS_NOT_REQUIRED_PARAMETER_TICKET.equals(e.getError())
                 || Error.THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM.equals(e.getError())
-                || Error.WRONG_PASSWORD.equals(e.getError())) {
+                || Error.WRONG_PASSWORD.equals(e.getError())
+                || Error.NO_WEIGHT.equals(e.getError())
+                || Error.NO_HEIGHT.equals(e.getError())) {
             response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getError().getMessage()));
         }
         if (Error.THERE_IS_NOT_YOUR_ACCOUNT.equals(e.getError())) {

@@ -9,7 +9,11 @@ public enum Error {
     THERE_IS_NOT_REQUIRED_PARAMETER_TICKET("Ticket parameter is required!"),
     THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM("That email doesn't exist in our system!"),
     THERE_IS_NOT_YOUR_ACCOUNT("There is not your account!"),
-    WRONG_PASSWORD("Wrong password!");
+    WRONG_PASSWORD("Wrong password!"),
+
+    NO_WEIGHT("You must give your weight"),
+
+    NO_HEIGHT("You must give your height");
 
     private String message;
 
