@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 class BMIServiceTest {
 
     @Test
-    void BMICalculate_thereIsNoClientWeightInTheRequest_shouldReturnClientException() {
+    void BMICalculate_thereIsNoClientHeightInTheRequest_shouldReturnClientException() {
         //given
         var mockBMIRequest = mock(BMIRequest.class);
         var toTest = new BMIService();
@@ -25,7 +25,7 @@ class BMIServiceTest {
     }
 
     @Test
-    void BMICalculate_thereIsNoClientHeightInTheRequest_shouldReturnClientException() {
+    void BMICalculate_thereIsNoClientWeightInTheRequest_shouldReturnClientException() {
         //given
         var mockBMIRequest = mock(BMIRequest.class);
         var toTest = new BMIService();

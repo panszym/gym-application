@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/clients/bmi")
 public class BMIController {
     private static final Logger logger = LoggerFactory.getLogger(BMIController.class);
-    BMIService bmiService;
+    private final BMIService bmiService;
 
     public BMIController(BMIService bmiService) {
         this.bmiService = bmiService;
     }
 
-    @GetMapping
+    @PostMapping
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
     public BMIResponse BMICalculate(@RequestBody BMIRequest bmiRequest) {
         logger.info("Bmi clients info.");

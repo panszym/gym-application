@@ -10,10 +10,9 @@ public enum Error {
     THERE_IS_NOT_THAT_EMAIL_IN_THE_SYSTEM("That email doesn't exist in our system!"),
     THERE_IS_NOT_YOUR_ACCOUNT("There is not your account!"),
     WRONG_PASSWORD("Wrong password!"),
-
     NO_WEIGHT("You must give your weight"),
-
-    NO_HEIGHT("You must give your height");
+    NO_HEIGHT("You must give your height"),
+    NO_AGE("You must give your age");
 
     private String message;
 
