@@ -16,15 +16,17 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B970";
-    public String extractUsername(String jwtToken){
+
+    public String extractUsername(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
     }
-    public <T> T extractClaim(String jwtToken, Function<Claims, T> claimsResolver){
+
+    public <T> T extractClaim(String jwtToken, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwtToken);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -33,7 +35,7 @@ public class JwtService {
                 .compact();
     }
 
-    private Claims extractAllClaims(String jwtToken){
+    private Claims extractAllClaims(String jwtToken) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
@@ -46,7 +48,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean isTokenValid(String jwtToken, UserDetails userDetails){
+    public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
         final String userEmail = extractUsername(jwtToken);
         return (userEmail.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
     }

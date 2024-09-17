@@ -12,7 +12,7 @@ public class ClientDto {
     private Client.Ticket ticket;
 
 
-    public ClientDto ClientToClientDtoAdapter(Client client){
+    public ClientDto ClientToClientDtoAdapter(Client client) {
         setFirstName(client.getFirstName());
         setLastName(client.getLastName());
         setEmail(client.getEmail());

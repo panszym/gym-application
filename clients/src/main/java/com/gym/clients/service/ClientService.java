@@ -10,7 +10,7 @@ public interface ClientService {
 
     List<Client> getClients();
 
-    ClientDto getClientById( Principal principal);
+    ClientDto getClientById(Principal principal);
 
     ClientDto getClientByIdAdmin(Long id);
 

@@ -28,7 +28,7 @@ public class Training {
 
     private String description;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dateTime;
 
     @Min(0)
@@ -77,6 +77,12 @@ public class Training {
 
     public void validateActiveStatus() {
         if (!Status.ACTIVE.equals(this.getStatus())) throw new TrainingException(Error.TRAINING_IS_NOT_ACTIVE);
+    }
+
+    public void validateDate(Training training) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        if (localDateTime.isAfter(training.getDateTime()))
+            throw new TrainingException(Error.WRONG_DATE);
     }
 
     public void validateTraining() {

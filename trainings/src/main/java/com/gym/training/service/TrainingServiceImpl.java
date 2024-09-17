@@ -56,6 +56,7 @@ public class TrainingServiceImpl implements TrainingService {
         if (trainingRepository.existsById(training.getTrainingCode()))
             throw new TrainingException(Error.TRAINING_ALREADY_EXIST);
         training.setParticipantsNumber(0);
+        training.validateDate(training);
         training.validateTraining();
         return trainingRepository.save(training);
     }
@@ -71,6 +72,7 @@ public class TrainingServiceImpl implements TrainingService {
     public Training putTraining(Training training, String trainingCode) {
         return trainingRepository.findById(trainingCode)
                 .map(dbTraining -> {
+                    training.validateDate(training);
                     training.validateTraining();
                     dbTraining.updateTrainingPut(training);
                     return trainingRepository.save(dbTraining);
@@ -81,6 +83,7 @@ public class TrainingServiceImpl implements TrainingService {
     public Training patchTraining(Training training, String trainingCode) {
         return trainingRepository.findById(trainingCode)
                 .map(dbTraining -> {
+                    training.validateDate(training);
                     training.validateTraining();
                     dbTraining.updateTrainingPatch(training);
                     return trainingRepository.save(dbTraining);
@@ -113,12 +116,12 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Training> getClientTraining(String email) {
         List<Training> training = trainingRepository.findAll();
         List<Training> clientTraining = new ArrayList<>();
-        for (Training train: training) {
+        for (Training train : training) {
             List<String> emails = train.getTrainingMemberList()
                     .stream()
                     .map(TrainingMember::getEmail)
                     .toList();
-            if(emails.contains(email))clientTraining.add(train);
+            if (emails.contains(email)) clientTraining.add(train);
         }
         return clientTraining;
     }

@@ -84,6 +84,21 @@ class TrainingServiceImplTest {
                 .isInstanceOf(TrainingException.class);
     }
 
+    @Test
+    void addTraining_trainingWithTheSameTrainingCodeDoesNotExistInSystem_statusActive_InvalidTrainingDate_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
+        var testTraining = getTestTraining();
+        //when
+        testTraining.setDateTime(LocalDateTime.parse("2022-10-23T17:00"));
+        when(mockTrainingRepository.existsById(testTraining.getTrainingCode())).thenReturn(true);
+        var exception = catchThrowable(() -> toTest.addTraining(testTraining));
+        //then
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
 
     @Test
     void putTraining_TrainingDoesNotExistInSystem_shouldThrowTrainingException() {
@@ -93,6 +108,22 @@ class TrainingServiceImplTest {
         var testTraining = getTestTraining();
         //when
         when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.empty());
+        var exception = catchThrowable(() -> toTest.putTraining(testTraining, anyString()));
+        //then
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void putTraining_TrainingExistsInSystem_invalidDate_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
+        var testTraining = getTestTraining();
+        var mockTraining = mock(Training.class);
+        //when
+        testTraining.setDateTime(LocalDateTime.parse("2022-10-23T17:00"));
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(mockTraining));
         var exception = catchThrowable(() -> toTest.putTraining(testTraining, anyString()));
         //then
         assertThat(exception)
@@ -159,6 +190,22 @@ class TrainingServiceImplTest {
         testTraining.setMaxParticipantsNumber(5);
         testTraining.setParticipantsNumber(5);
         testTraining.setStatus(Training.Status.ACTIVE);
+        when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(mockTraining));
+        var exception = catchThrowable(() -> toTest.patchTraining(testTraining, anyString()));
+        //then
+        assertThat(exception)
+                .isInstanceOf(TrainingException.class);
+    }
+
+    @Test
+    void patchTraining_TrainingExistsInSystem_invalidDate_shouldThrowTrainingException() {
+        //given
+        var mockTrainingRepository = mock(TrainingRepository.class);
+        var toTest = new TrainingServiceImpl(mockTrainingRepository, null);
+        var testTraining = getTestTraining();
+        var mockTraining = mock(Training.class);
+        //when
+        testTraining.setDateTime(LocalDateTime.parse("2022-10-23T17:00"));
         when(mockTrainingRepository.findById(anyString())).thenReturn(Optional.of(mockTraining));
         var exception = catchThrowable(() -> toTest.patchTraining(testTraining, anyString()));
         //then
@@ -462,7 +509,7 @@ class TrainingServiceImplTest {
         training.setStatus(Training.Status.ACTIVE);
         training.setDescription("Test description");
         training.setParticipantsNumber(0);
-        training.setDateTime(LocalDateTime.parse("2024-10-23T17:00:00.000"));
+        training.setDateTime(LocalDateTime.parse("2030-10-23T17:00:00.000"));
         training.setMaxParticipantsNumber(10);
         return training;
     }

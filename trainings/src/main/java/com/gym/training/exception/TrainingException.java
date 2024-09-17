@@ -1,6 +1,6 @@
 package com.gym.training.exception;
 
-public class TrainingException extends RuntimeException{
+public class TrainingException extends RuntimeException {
     private Error error;
 
     public TrainingException(Error error) {

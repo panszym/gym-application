@@ -64,14 +64,15 @@ public class Client implements UserDetails {
         if (client.getTicket() != null) setTicket(client.getTicket());
     }
 
-    public void activateClient(){
+    public void activateClient() {
         setRole(Role.CLIENT);
         setStatus(Status.ACTIVE);
     }
-    public void toggleStatus(){
-        if (Status.ACTIVE.equals(this.getStatus())){
+
+    public void toggleStatus() {
+        if (Status.ACTIVE.equals(this.getStatus())) {
             setStatus(Status.INACTIVE);
-        }else setStatus(Status.ACTIVE);
+        } else setStatus(Status.ACTIVE);
     }
 
     @Override

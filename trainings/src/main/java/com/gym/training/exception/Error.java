@@ -12,7 +12,8 @@ public enum Error {
     CLIENT_IS_NOT_ENROLLED_FOR_THIS_TRAINING("Client is not enrolled for this training"),
     THERE_IS_NOT_REQUIRED_PARAMETER_STATUS("Status parameter is required"),
 
-    THERE_IS_NOT_REQUIRED_PARAMETER_CATEGORY("Category parameter is required");
+    THERE_IS_NOT_REQUIRED_PARAMETER_CATEGORY("Category parameter is required"),
+    WRONG_DATE("You cannot set the date in the past.");
 
     private String message;
 

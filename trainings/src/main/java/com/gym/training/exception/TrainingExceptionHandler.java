@@ -15,7 +15,8 @@ public class TrainingExceptionHandler {
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorInfo(e.getError().getMessage()));
         }
         if (Error.THERE_IS_NOT_REQUIRED_PARAMETER_STATUS.equals(e.getError())
-                || Error.THERE_IS_NOT_REQUIRED_PARAMETER_CATEGORY.equals(e.getError())) {
+                || Error.THERE_IS_NOT_REQUIRED_PARAMETER_CATEGORY.equals(e.getError())
+                || Error.WRONG_DATE.equals(e.getError())) {
             response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getError().getMessage()));
         }
         if (Error.TRAINING_ALREADY_EXIST.equals(e.getError())

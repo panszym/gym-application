@@ -37,5 +37,4 @@ public interface TrainingService {
     void finishTraining(String trainingCode);
 
 
-
 }

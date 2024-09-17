@@ -64,9 +64,9 @@ public class AuthServiceImpl implements AuthService {
     private void extracted(AuthenticationRequest request) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        }catch (DisabledException e) {
+        } catch (DisabledException e) {
             throw new Exception("Profile disabled");
-        }catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             throw new ClientException((Error.WRONG_PASSWORD));
         }
     }

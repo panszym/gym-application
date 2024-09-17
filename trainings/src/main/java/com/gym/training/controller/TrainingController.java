@@ -56,7 +56,7 @@ public class TrainingController {
     }
 
     @GetMapping("/{trainingCode}/participants")
-    public List<ClientDto> getTrainingMembers(@PathVariable String trainingCode){
+    public List<ClientDto> getTrainingMembers(@PathVariable String trainingCode) {
         logger.info("Display training participants");
         return trainingService.getTrainingMembers(trainingCode);
     }
@@ -86,21 +86,21 @@ public class TrainingController {
     }
 
     @PostMapping("/{trainingCode}/clients/{clientId}")
-    ResponseEntity<?> trainingSignup(@PathVariable String trainingCode, @PathVariable Long clientId){
+    ResponseEntity<?> trainingSignup(@PathVariable String trainingCode, @PathVariable Long clientId) {
         trainingService.trainingSignup(trainingCode, clientId);
         logger.info("Client signed up to the training");
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/finish/{trainingCode}")
-    ResponseEntity<?> finishTraining(@PathVariable String trainingCode){
+    ResponseEntity<?> finishTraining(@PathVariable String trainingCode) {
         trainingService.finishTraining(trainingCode);
         logger.info("Finish training");
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/remove/{trainingCode}/clients/{clientId}")
-    ResponseEntity<?> removeParticipantFromTraining(@PathVariable String trainingCode, @PathVariable Long clientId){
+    ResponseEntity<?> removeParticipantFromTraining(@PathVariable String trainingCode, @PathVariable Long clientId) {
         trainingService.removeParticipantFromTraining(trainingCode, clientId);
         logger.info("Remove participant from training");
         return ResponseEntity.ok().build();

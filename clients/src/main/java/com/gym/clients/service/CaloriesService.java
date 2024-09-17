@@ -12,7 +12,6 @@ public class CaloriesService {
     private static final Logger logger = LoggerFactory.getLogger(CaloriesService.class);
 
 
-
     public int calorieCalculate(CaloriesRequest caloriesRequest) {
         logger.info("Calorie calculator info service.");
         CaloriesResponse caloriesResponse = new CaloriesResponse();
