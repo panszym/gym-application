@@ -21,7 +21,7 @@ public class CaloriesController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public int caloriesCalculate(@RequestBody CaloriesRequest caloriesRequest) {
+    int caloriesCalculate(@RequestBody CaloriesRequest caloriesRequest) {
         logger.info("Calorie calculator info.");
         return caloriesService.calorieCalculate(caloriesRequest);
     }

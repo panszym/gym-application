@@ -22,14 +22,14 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<AuthenticationResponse> registerClient(@RequestBody @Valid Client client) {
+    ResponseEntity<AuthenticationResponse> registerClient(@RequestBody @Valid Client client) {
         logger.info("Add client to database");
         var token = authService.registerClient(client);
         return ResponseEntity.ok(token);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticateClient(@RequestBody AuthenticationRequest request) throws Exception {
+    ResponseEntity<AuthenticationResponse> authenticateClient(@RequestBody AuthenticationRequest request) throws Exception {
         logger.info("Authentication client.");
         var token = authService.authenticate(request);
         logger.info(token.toString());

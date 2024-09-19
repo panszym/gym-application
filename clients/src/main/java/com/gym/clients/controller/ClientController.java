@@ -27,89 +27,89 @@ public class ClientController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<Client> getClients() {
+    List<Client> getClients() {
         logger.info("Display clients info.");
         return clientService.getClients();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public Client getClient(@PathVariable Long id) {
+    Client getClient(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientById(id);
     }
 
     @GetMapping("/admin/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ClientDto getClientAdmin(@PathVariable Long id) {
+    ClientDto getClientAdmin(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientByIdAdmin(id);
     }
 
     @GetMapping("/feign/{id}")
-    public Client getClientFeign(@PathVariable Long id) {
+    Client getClientFeign(@PathVariable Long id) {
         logger.info("Display client info.");
         return clientService.getClientByIdFeign(id);
     }
 
     @GetMapping("/me")
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public ClientDto getClient(Principal principal) {
+    ClientDto getClient(Principal principal) {
         logger.info("Display client info.");
         return clientService.getClientById(principal);
     }
 
     @GetMapping("/status")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<Client> getClientsByStatus(@RequestParam(required = false) Client.Status status) {
+    List<Client> getClientsByStatus(@RequestParam(required = false) Client.Status status) {
         logger.info("Display client by status.");
         return clientService.getClientsByStatus(status);
     }
 
     @GetMapping("/tickets")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<Client> getClientsByTicket(@RequestParam(required = false) Client.Ticket ticket) {
+    List<Client> getClientsByTicket(@RequestParam(required = false) Client.Ticket ticket) {
         logger.info("Display client by ticket.");
         return clientService.getClientsByTicket(ticket);
     }
 
     @PostMapping("/feign/emails")
-    public List<Client> getClientsByEmail(@RequestBody List<String> emails) {
+    List<Client> getClientsByEmail(@RequestBody List<String> emails) {
         logger.info("Display client by email.");
         return clientService.getClientsByEmail(emails);
     }
 
     @PostMapping("/email")
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public Client getClientByEmail(@RequestParam String email) {
+    Client getClientByEmail(@RequestParam String email) {
         logger.info("Display client by email.");
         return clientService.getClientByEmail(email);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteClient(@PathVariable Long id) {
+    void deleteClient(@PathVariable Long id) {
         logger.info("Remove client from database.");
         clientService.deleteClient(id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public Client putClient(@RequestBody @Valid Client client, @PathVariable Long id) {
+    Client putClient(@RequestBody @Valid Client client, @PathVariable Long id) {
         logger.info("Update client's data.");
         return clientService.putClient(client, id);
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public ClientDto patchClient(@RequestBody Client client, @PathVariable Long id) {
+    ClientDto patchClient(@RequestBody Client client, @PathVariable Long id) {
         logger.info("Update client's data.");
         return clientService.patchClient(client, id);
     }
 
     @PatchMapping("/status/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> toggleStatus(@PathVariable Long id) {
+    ResponseEntity<?> toggleStatus(@PathVariable Long id) {
         clientService.toggleStatus(id);
         logger.info("Updated client's status.");
         return ResponseEntity.noContent().build();

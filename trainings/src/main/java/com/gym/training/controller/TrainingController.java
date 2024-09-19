@@ -56,7 +56,7 @@ public class TrainingController {
     }
 
     @GetMapping("/{trainingCode}/participants")
-    public List<ClientDto> getTrainingMembers(@PathVariable String trainingCode) {
+    List<ClientDto> getTrainingMembers(@PathVariable String trainingCode) {
         logger.info("Display training participants");
         return trainingService.getTrainingMembers(trainingCode);
     }

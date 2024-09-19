@@ -21,7 +21,7 @@ public class BMIController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT') or hasAuthority('ADMIN')")
-    public BMIResponse BMICalculate(@RequestBody BMIRequest bmiRequest) {
+     BMIResponse BMICalculate(@RequestBody BMIRequest bmiRequest) {
         logger.info("Bmi clients info.");
         return bmiService.BMICalculate(bmiRequest);
     }
