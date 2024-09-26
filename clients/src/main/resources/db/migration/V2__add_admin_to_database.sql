@@ -1,2 +1,0 @@
-insert into clients (id, first_name, last_name, password, email, status, ticket, role)
-values (0, 'admin', 'admin', '$2a$10$7vv1p2etgueqTZgqbdZ3aedwmom54PvhQ8x6LZ/.2l9ftPF2JI/Fm', 'admin@poczta.com', 'ACTIVE', 'MASTER', 'ADMIN')
