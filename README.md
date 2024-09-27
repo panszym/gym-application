@@ -2,7 +2,7 @@
 
 ## A few words about the application
 
-My application is used to manage the operation of the gym. It allows clients to register for the gym's website. Users for example can check out the gym's offer, sign up for group training, claculate their Body Mass Index or calculate daily calorie requirement. The application has an administrator panel that allows you to manage gym's users and trainings. The application backend is written in Java using spring boot. Hibernate framework is using to communicate with the database. Application consist of two microservices: for customer management (h2 database), and second for training management (MongoDB database). Eureka server is used for communication between microservices in the application. Application's frontend is written in typescript using  React.
+My application is used to manage the operation of the gym. It allows clients to register for the gym's website. Users for example can check out the gym's offer, sign up for group training, claculate their Body Mass Index or calculate daily calorie requirement. The application has an administrator panel that allows you to manage gym's users and trainings. The application backend is written in Java using spring boot. Hibernate framework is using to communicate with the database. Login and registration functionality was made using Spring Security. Application consist of two microservices: for customer management (h2 database), and second for training management (MongoDB database). Eureka server is used for communication between microservices in the application. Application's frontend is written in typescript using  React.
 
 ## Launching the application
 
