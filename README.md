@@ -82,6 +82,7 @@ When you log in to the website you will see the home page. You can use the navig
 
 #### Admin panel
 The application has an administrator panel where it is possible to manage clients and trainings databases. To log in as admin you should use the following details:
+
 **-email: `admin@poczta.com`
 -password: `admin`**
 
