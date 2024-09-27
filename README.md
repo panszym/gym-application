@@ -42,7 +42,7 @@ When the application starts we will see a login form. You need log in to your ac
  
 <p align="center"> Login page.</p>
 
-![registration](https://github.com/user-attachments/assets/069c56b3-09e0-4ef8-ae4d-2f45764ae0b6)
+![registration](https://github.com/user-attachments/assets/320c3f71-d4db-4a29-ba29-1104edc4fd27)
 <p align="center"> Registration page</p>
 
 
