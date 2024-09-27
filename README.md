@@ -38,7 +38,7 @@ Application started at [http://localhost:3000](http://localhost:3000/)
 
 When the application starts we will see a login form. You need log in to your account to access the website. If you don't have an account, register on the website.
  
- ![login](https://github.com/user-attachments/assets/8b5b2872-ec12-49b9-9e51-2a6078c7567d)
+ ![login](https://github.com/user-attachments/assets/c4eda5a6-719b-4848-931a-639ddeb8534b)
  
 <p align="center"> Login page.</p>
 
