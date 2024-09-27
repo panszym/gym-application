@@ -84,7 +84,6 @@ When you log in to the website you will see the home page. You can use the navig
 The application has an administrator panel where it is possible to manage clients and trainings databases. To log in as admin you should use the following details:
 
 **-email: `admin@poczta.com`
-
 -password: `admin`**
 
  - Clients - admin sees a list of all gym's clients. Admin can filter results by customer activity status. After pressing a given client, the admin sees detailed customer data. Admin has the right to change customer data, for example the type of season ticket and to delete the client from gym's system.
