@@ -70,7 +70,7 @@ public class Training {
     }
 
     private void validateStatus() {
-        if (Status.ACTIVE.equals(status) && participantsNumber.equals(maxParticipantsNumber)) {
+        if (Status.ACTIVE.equals(status) && participantsNumber > maxParticipantsNumber) {
             throw new TrainingException(Error.TRAINING_CANNOT_HAVE_ACTIVE_STATUS);
         }
     }
@@ -112,6 +112,7 @@ public class Training {
         if (training.getMaxParticipantsNumber() != null) setMaxParticipantsNumber(training.getMaxParticipantsNumber());
         if (training.getStatus() != null) setStatus(training.getStatus());
         if (training.getCategory() != null) setCategory(training.getCategory());
+        if (training.getMaxParticipantsNumber() != null && training.getMaxParticipantsNumber().equals(training.getParticipantsNumber()))setStatus(Status.FULL);
     }
 
     public void addParticipant() {
