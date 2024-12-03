@@ -66,7 +66,7 @@ public class Training {
     }
 
     private void validateParticipants() {
-        if (maxParticipantsNumber < participantsNumber) throw new TrainingException(Error.MORE_PARTICIPANTS_THAN_LIMIT);
+        if (maxParticipantsNumber < participantsNumber || maxParticipantsNumber == 0) throw new TrainingException(Error.MORE_PARTICIPANTS_THAN_LIMIT);
     }
 
     private void validateStatus() {
